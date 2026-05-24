@@ -2,32 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class DatabaseSeeder extends Seeder
+class UserSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function up(): void
-    {
-        // Jalankan perintah migrasi tabel terlebih dahulu jika diperlukan
-    }
-
     public function run(): void
     {
-        // 1. Data Akun Admin
+        // Data Admin
         User::create([
             'nama' => 'Admin Greasycle',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('password123'), // Password otomatis di-hash aman oleh Laravel
+            'password' => Hash::make('password123'), // Password otomatis di-enkripsi aman oleh Laravel
             'role' => 'admin',
             'no_telp' => '081234567890'
         ]);
 
-        // 2. Data Akun Pelanggan
+        // Data Pelanggan
         User::create([
             'nama' => 'Masyito Indi Kartika',
             'email' => 'pelanggan@gmail.com',
@@ -36,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'no_telp' => '089876543210'
         ]);
 
-        // 3. Data Akun Mitra
+        // Data Mitra
         User::create([
             'nama' => 'Mitra Driver Greasycle',
             'email' => 'mitra@gmail.com',
