@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PelangganController extends Controller
 {
-    // 1. TAMPILAN DASHBOARD (Fungsi ini yang tadi dilaporkan hilang/undefined)
+    // 1. TAMPILAN DASHBOARD PELANGGAN
     public function dashboard()
     {
         $user = Auth::user(); 
@@ -21,7 +21,7 @@ class PelangganController extends Controller
         // Hitung saldo digital (Volume x 5000)
         $saldo = $total_volume * 5000;
 
-        // Cek apakah ada penjemputan yang sedang aktif
+        // Cek apakah ada penjemputan yang sedang aktif (belum selesai)
         $has_aktif = Transaksi::where('user_id', $user->id)
             ->where('status', '!=', 'selesai')
             ->exists();
@@ -42,13 +42,13 @@ class PelangganController extends Controller
         return view('pelanggan.transaksi');
     }
 
-    // 3. PROSES SIMPAN SETORAN
+    // 3. PROSES SIMPAN SETORAN BARU
     public function store(Request $request)
     {
         $request->validate([
             'volume' => 'required|numeric|min:0.1',
             'alamat_jemput' => 'required|string',
-            'catatan' => 'nullable|string',
+            'catatan' => 'nullable|string|max:255',
         ]);
 
         Transaksi::create([
@@ -57,7 +57,7 @@ class PelangganController extends Controller
             'alamat_jemput' => $request->alamat_jemput,
             'catatan' => $request->catatan,
             'tgl_request' => now()->toDateString(),
-            'status' => 'menunggu'
+            'status' => 'menunggu' // Status awal saat mendaftar
         ]);
 
         return redirect()->route('pelanggan.dashboard')->with('sukses', 'Berhasil! Setoran minyak telah dicatat. Tim Greasycle akan segera menuju lokasi.');
@@ -70,19 +70,20 @@ class PelangganController extends Controller
         return view('pelanggan.detail', compact('data'));
     }
 
-    // 5. TAMPILAN EDIT SETORAN
+    // 5. TAMPILAN EDIT FORM SETORAN
     public function edit($id)
     {
         $data = Transaksi::where('id', $id)->where('user_id', Auth::id())->where('status', 'menunggu')->firstOrFail();
         return view('pelanggan.edit', compact('data'));
     }
 
-    // 6. PROSES UPDATE SETORAN
+    // 6. PROSES UPDATE PERUBAHAN DATA SETORAN
     public function update(Request $request, $id)
     {
         $request->validate([
             'volume' => 'required|numeric|min:0.1',
             'alamat_jemput' => 'required|string',
+            'catatan' => 'nullable|string|max:255',
         ]);
 
         $transaksi = Transaksi::where('id', $id)->where('user_id', Auth::id())->where('status', 'menunggu')->firstOrFail();
@@ -90,12 +91,13 @@ class PelangganController extends Controller
         $transaksi->update([
             'volume' => $request->volume,
             'alamat_jemput' => $request->alamat_jemput,
+            'catatan' => $request->catatan,
         ]);
 
-        return redirect()->route('pelanggan.dashboard')->with('sukses', 'Perubahan setoran berhasil disimpan.');
+        return redirect()->route('pelanggan.dashboard')->with('sukses', 'Perubahan data setoran berhasil disimpan.');
     }
 
-    // 7. PROSES HAPUS SETORAN
+    // 7. PROSES HAPUS / BATALKAN SETORAN
     public function destroy($id)
     {
         $transaksi = Transaksi::where('id', $id)->where('user_id', Auth::id())->where('status', 'menunggu')->firstOrFail();
