@@ -6,14 +6,14 @@
     <title>Dashboard Pelanggan - Greasycle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
     <nav class="bg-white text-slate-800 py-4 px-[8%] flex flex-col md:flex-row justify-between items-center shadow-sm border-b border-slate-100 sticky top-0 z-50">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-linear-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-emerald-100">
+            <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-emerald-100">
                 <i class="fas fa-tint text-xl"></i>
             </div>
             <div>
@@ -36,7 +36,6 @@
     </nav>
 
     <div class="max-w-6xl mx-auto px-6 py-10 grow w-full">
-        
         <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
             
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 border-b border-slate-100 pb-5 gap-4">
@@ -59,17 +58,19 @@
             @endif
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="bg-linear-to-br from-slate-700 to-slate-800 p-6 rounded-2xl text-white shadow-md shadow-slate-200 relative overflow-hidden">
+                <div class="bg-gradient-to-br from-slate-700 to-slate-800 p-6 rounded-2xl text-white shadow-md shadow-slate-200 relative overflow-hidden">
                     <div class="absolute -right-6 -bottom-6 text-white/10 text-7xl transform -rotate-12"><i class="fas fa-balance-scale"></i></div>
                     <p class="text-slate-200/70 text-xs font-bold uppercase tracking-wider mb-1">Total Volume Setor</p>
                     <h3 class="text-3xl font-extrabold">{{ $total_volume }} <span class="text-base font-normal text-slate-300">Liter</span></h3>
                 </div>
-                <div class="bg-linear-to-br from-emerald-500 to-teal-600 p-6 rounded-2xl text-white shadow-md shadow-emerald-100 relative overflow-hidden">
+                
+                <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-2xl text-white shadow-md shadow-emerald-100 relative overflow-hidden">
                     <div class="absolute -right-6 -bottom-6 text-white/10 text-7xl transform -rotate-12"><i class="fas fa-wallet"></i></div>
                     <p class="text-emerald-100/70 text-xs font-bold uppercase tracking-wider mb-1">Total Saldo Terkumpul</p>
                     <h3 class="text-3xl font-extrabold">Rp {{ number_format($saldo, 0, ',', '.') }}</h3>
                 </div>
-                <div class="bg-linear-to-br from-slate-50 to-slate-100/70 p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-center">
+                
+                <div class="bg-gradient-to-br from-slate-50 to-slate-100/70 p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-center">
                     <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Status Penjemputan</p>
                     <h3 class="text-lg font-bold mt-1 flex items-center gap-2.5 text-slate-800">
                         <span class="w-3 h-3 rounded-full {{ $status_aktif == 'Ada Penjemputan' ? 'bg-amber-500 animate-pulse' : 'bg-slate-300' }}"></span>
@@ -117,7 +118,7 @@
                                     $badge = 'bg-amber-50 text-amber-700 border-amber-100';
                                 }
                             @endphp
-                            <tr class="hover:bg-slate-50/50 transition row-transaksi" data-status="{{ $status_db }}" data-alamat="{{ strtolower($row->alamat_jemput) }}" data-id="#trx-{{ $row->id }}">
+                            <tr class="hover:bg-slate-50/50 transition row-transaksi" data-status="{{ $status_db }}" data-alamat="{{ strtolower($row->alamat_jemput ?? '') }}" data-id="#trx-{{ $row->id }}">
                                 <td class="p-4 text-center font-medium text-slate-400">{{ $index + 1 }}</td>
                                 <td class="p-4 font-mono font-bold text-slate-900">#TRX-{{ $row->id }}</td>
                                 <td class="p-4 text-slate-500">{{ date('d M Y', strtotime($row->tgl_request)) }}</td>
@@ -129,10 +130,10 @@
                                 </td>
                                 <td class="p-4 text-center font-semibold">
                                     <div class="flex justify-center gap-4">
-                                        <a href="{{ route('pelanggan.transaksi.show', $row->id) }}" class="text-emerald-600 hover:text-emerald-700 flex items-center gap-1"><i class="fas fa-eye text-xs"></i> Detail</a>
+                                        <a href="{{ route('pelanggan.show', $row->id) }}" class="text-emerald-600 hover:text-emerald-700 flex items-center gap-1"><i class="fas fa-eye text-xs"></i> Detail</a>
                                         @if($status_db == 'menunggu')
-                                            <a href="{{ route('pelanggan.transaksi.edit', $row->id) }}" class="text-amber-600 hover:text-amber-700 flex items-center gap-1"><i class="fas fa-edit text-xs"></i> Edit</a>
-                                            <form action="{{ route('pelanggan.transaksi.destroy', $row->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengajuan transaksi ini?')" class="inline">
+                                            <a href="{{ route('pelanggan.edit', $row->id) }}" class="text-amber-600 hover:text-amber-700 flex items-center gap-1"><i class="fas fa-edit text-xs"></i> Edit</a>
+                                            <form action="{{ route('pelanggan.destroy', $row->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengajuan transaksi ini?')" class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-500 hover:text-red-600 font-semibold flex items-center gap-1"><i class="fas fa-trash-alt text-xs"></i> Hapus</button>
@@ -177,14 +178,13 @@
             btn.classList.add('bg-emerald-600', 'text-white', 'shadow-sm');
         }
 
-        // Fitur Pencarian Real-time Kombinasi Teks
         document.getElementById('pencarian').addEventListener('input', function() {
             const input = this.value.toLowerCase();
             const rows = document.querySelectorAll('.row-transaksi');
 
             rows.forEach(row => {
-                const alamat = row.getAttribute('data-alamat');
-                const id = row.getAttribute('data-id');
+                const alamat = row.getAttribute('data-alamat') || '';
+                const id = row.getAttribute('data-id') || '';
                 if (alamat.includes(input) || id.includes(input)) {
                     row.style.display = '';
                 } else {

@@ -14,18 +14,17 @@ class AuthController extends Controller
     {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required', // Tetap password
         ]);
 
+        // KEMBALIKAN KE DEFAULT LARAVEL
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             
-            // Cek role user yang login
             if (Auth::user()->role === 'pelanggan') {
                 return redirect()->route('pelanggan.dashboard');
             }
             
-            // Tambahkan redirect role lain jika ada (misal admin/mitra)
             return redirect('/');
         }
 
@@ -45,11 +44,12 @@ class AuthController extends Controller
             'role' => 'required|in:pelanggan,usaha,mitra'
         ]);
 
+        // KEMBALIKAN KE 'password' AGAR SESUAI DENGAN KOLOM DATABASE-MU
         User::create([
             'nama' => $request->nama,
             'no_telp' => $request->no_telp,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // Password aman terenkripsi Bcrypt
+            'password' => Hash::make($request->password), 
             'role' => $request->role,
         ]);
 
