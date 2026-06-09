@@ -198,27 +198,19 @@
     <div class="modal-content shadow-2xl border border-gray-100 text-left">
         
         <div id="loginArea">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-primary">Masuk Akun</h2>
-                <button onclick="closeAuth()" class="text-gray-400 hover:text-red-500 transition">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-
-            @if ($errors->has('email'))
-                <div class="bg-red-50 text-red-600 p-3 rounded-xl text-xs mb-4 font-medium">
-                    {{ $errors->first('email') }}
-                </div>
-            @endif
-
-            <form action="{{ route('login') }}" method="POST" class="space-y-5" autocomplete="off">
-                @csrf
-                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email" class="w-full p-4 bg-gray-50 border rounded-2xl focus:outline-secondary text-sm" autocomplete="off" required>
-                <input type="password" name="password" placeholder="Password" class="w-full p-4 bg-gray-50 border rounded-2xl focus:outline-secondary text-sm" autocomplete="new-password" required>
-                <button type="submit" class="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-secondary transition shadow-lg">Masuk Sekarang</button>
-            </form>
-            <p class="text-center text-sm mt-8 text-gray-500">Belum punya akun? <a href="javascript:void(0)" onclick="switchForm('register')" class="text-secondary font-bold hover:underline">Daftar</a></p>
+             @if ($errors->has('login_error'))
+        <div class="bg-red-50 text-red-600 p-3 rounded-xl text-xs mb-4 font-medium">
+            {{ $errors->first('login_error') }}
         </div>
+        @endif
+             <form action="{{ route('login') }}" method="POST" class="space-y-5" autocomplete="off">
+        @csrf
+        <input type="email" name="email" value="{{ old('email') }}" placeholder="Email" class="w-full p-4 bg-gray-50 border rounded-2xl focus:outline-secondary text-sm" required>
+        <input type="password" name="password" placeholder="Password" class="w-full p-4 bg-gray-50 border rounded-2xl focus:outline-secondary text-sm" required>
+        <button type="submit" class="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-secondary transition shadow-lg">Masuk Sekarang</button>
+    </form>
+    <p class="text-center text-sm mt-8 text-gray-500">Belum punya akun? <a href="javascript:void(0)" onclick="switchForm('register')" class="text-secondary font-bold hover:underline">Daftar</a></p>
+</div>
 
         <div id="registerArea" class="hidden-form">
             <div class="flex justify-between items-center mb-6">
