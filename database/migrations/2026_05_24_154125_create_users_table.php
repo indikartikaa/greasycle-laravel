@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->enum('role', ['admin', 'pelanggan', 'mitra']);
             $table->string('no_telp', 20)->nullable();
+            $table->rememberToken();
             $table->timestamps(); 
         });
     }

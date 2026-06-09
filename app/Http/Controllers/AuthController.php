@@ -9,31 +9,26 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // PROSES MASUK AKUN (LOGIN)
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required', // Tetap password
-        ]);
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        // KEMBALIKAN KE DEFAULT LARAVEL
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            
-            if (Auth::user()->role === 'pelanggan') {
-                return redirect()->route('pelanggan.dashboard');
-            }
-            
-            return redirect('/');
-        }
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        $role = trim(strtolower(Auth::user()->role));
 
-        return back()->withErrors([
-            'email' => 'Kombinasi email atau password salah!',
-        ])->withInput($request->only('email'));
+        if ($role === 'pelanggan') return redirect()->route('pelanggan.dashboard');
+        if ($role === 'mitra') return redirect()->route('mitra.dashboard');
+
+        return redirect('/');
     }
 
-    // PROSES DAFTAR AKUN BARU (REGISTER)
+    return back()->withErrors(['login_error' => 'Email atau password salah!'])->onlyInput('email');
+}
+
     public function register(Request $request)
     {
         $request->validate([
@@ -44,7 +39,6 @@ class AuthController extends Controller
             'role' => 'required|in:pelanggan,usaha,mitra'
         ]);
 
-        // KEMBALIKAN KE 'password' AGAR SESUAI DENGAN KOLOM DATABASE-MU
         User::create([
             'nama' => $request->nama,
             'no_telp' => $request->no_telp,
@@ -53,16 +47,23 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect('/')->with('sukses', 'Pendaftaran berhasil! Silakan masuk ke akun Anda.');
+        return redirect('/')->with('sukses', 'Pendaftaran berhasil!');
     }
 
-    // PROSES KELUAR AKUN (LOGOUT)
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
         return redirect('/');
     }
+    public function showLogin()
+{
+    if (Auth::check()) {
+        $role = trim(strtolower(Auth::user()->role));
+        if ($role === 'mitra') return redirect()->route('mitra.dashboard');
+        if ($role === 'pelanggan') return redirect()->route('pelanggan.dashboard');
+    }
+    return redirect('/');
+}
 }
