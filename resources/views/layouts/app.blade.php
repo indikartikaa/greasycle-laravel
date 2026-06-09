@@ -62,8 +62,7 @@
 
         /* FAQ Animation Styles */
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
-        .faq-item.active .faq-answer { max-height: 500px; transition: max-height 0.5s ease-in; }
-        .faq-item.active .faq-chevron { transform: rotate(180deg); }
+        .faq-answer-active { max-height: 500px; transition: max-height 0.5s ease-in; }
 
         /* Footer Link Geser Custom Style */
         .footer-link {
@@ -86,7 +85,7 @@
 </head>
 <body class="overflow-x-hidden min-h-screen flex flex-col">
 
-<nav class="bg-white py-4 px-[8%] sticky top-0 z-1000 shadow-md">
+<nav class="bg-white py-4 px-[8%] sticky top-0 z-50 shadow-md">
     <div class="flex justify-between items-center">
         <div class="text-2xl font-bold text-primary tracking-tight">Greasycle</div>
         
@@ -113,13 +112,19 @@
             </li>
             
             <li class="ml-4">
+                {{-- REVISI KUSTOM: Super tipis, ramping, proporsional, dan anti-patah --}}
                 @auth
-                    <div class="flex items-center gap-4 bg-accent/30 px-4 py-2 rounded-full border border-accent">
-                        <span class="text-primary font-bold text-sm italic">Halo, {{ Auth::user()->nama }}</span>
-                        <div class="w-px h-4 bg-primary/20"></div>
-                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                    <div class="flex items-center gap-3 bg-accent/30 px-3.5 py-1.5 rounded-xl border border-accent/60 text-xs font-semibold">
+                        <a href="{{ route('pelanggan.dashboard') }}" class="text-primary hover:text-secondary flex items-center gap-1.5 transition">
+                            <div class="w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center text-[10px] font-bold uppercase">
+                                {{ substr(Auth::user()->nama, 0, 1) }}
+                            </div>
+                            <span class="hidden lg:inline">Dashboard</span>
+                        </a>
+                        <div class="w-px h-3 bg-primary/20"></div>
+                        <form action="{{ route('logout') }}" method="POST" class="inline m-0 p-0">
                             @csrf
-                            <button type="submit" class="text-red-500 text-[10px] font-extrabold uppercase tracking-widest hover:text-red-700 transition bg-transparent border-none p-0 cursor-pointer">Keluar</button>
+                            <button type="submit" class="text-red-500 hover:text-red-700 transition bg-transparent border-none p-0 cursor-pointer font-bold text-[11px] uppercase tracking-wide">Keluar</button>
                         </form>
                     </div>
                 @else
@@ -135,14 +140,27 @@
         </div>
     </div>
 
+    {{-- MOBILE MENU RESPONSIVE --}}
     <ul id="mobile-menu" class="hidden flex-col absolute top-full left-0 w-full bg-white shadow-lg p-6 space-y-4 md:hidden border-t border-gray-100 list-none m-0">
         <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-primary font-bold' : 'text-[#666]' }}">Beranda</a></li>
         <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-primary font-bold' : 'text-[#666]' }}">Tentang</a></li>
         <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'text-primary font-bold' : 'text-[#666]' }}">Kontak</a></li>
         <li><a href="{{ route('portofolio') }}" class="{{ request()->routeIs('portofolio') ? 'text-primary font-bold' : 'text-[#666]' }}">Portofolio</a></li>
-        @unless(Auth::check())
-            <li><button onclick="openAuth()" class="w-full bg-primary text-white py-3 rounded-xl font-bold">Login</button></li>
-        @endunless
+        @auth
+            <li>
+                <a href="{{ route('pelanggan.dashboard') }}" class="block w-full text-center bg-emerald-50 text-emerald-700 py-3 rounded-xl font-bold text-sm">
+                    Portal Dashboard
+                </a>
+            </li>
+            <li>
+                <form action="{{ route('logout') }}" method="POST" class="w-full m-0 p-0">
+                    @csrf
+                    <button type="submit" class="w-full bg-red-500 text-white py-3 rounded-xl font-bold text-sm">Keluar</button>
+                </form>
+            </li>
+        @else
+            <li><button onclick="openAuth()" class="w-full bg-primary text-white py-3 rounded-xl font-bold text-sm">Login</button></li>
+        @endauth
     </ul>
 </nav>
 
@@ -259,7 +277,7 @@
         };
     }
 
-    // Modal Operations (Dijalankan secara global lewat pemicu tombol nav)
+    // Modal Operations
     const modalAuth = document.getElementById('authModal');
     
     function openAuth() { 

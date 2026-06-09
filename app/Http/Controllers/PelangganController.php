@@ -33,7 +33,31 @@ class PelangganController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('pelanggan.dashboard', compact('user', 'total_volume', 'saldo', 'status_aktif', 'transaksi'));
+        // ==========================================
+        // TAMBAHAN PERBAIKAN UNTUK VARIABEL UI BARU
+        // ==========================================
+        
+        // 1. Hitung total seluruh transaksi (menunggu + dijemput + selesai)
+        $total_transaksi = $transaksi->count();
+
+        // 2. Hitung dampak lingkungan (Misal: 1 Liter jelantah menghemat ~2.5 Kg CO2)
+        $co2 = $total_volume * 2.5;
+
+        // 3. Hitung persentase target bulanan (Batas max 100% dari target 20 Liter)
+        $target_bulanan = 20;
+        $persentase_target = $target_bulanan > 0 ? min(($total_volume / $target_bulanan) * 100, 100) : 0;
+
+        // Kirimkan semua variabel lama dan baru ke view Blade
+        return view('pelanggan.dashboard', compact(
+            'user', 
+            'total_volume', 
+            'saldo', 
+            'status_aktif', 
+            'transaksi',
+            'total_transaksi',
+            'co2',
+            'persentase_target'
+        ));
     }
 
     // 2. TAMPILAN FORM SETOR MINYAK
