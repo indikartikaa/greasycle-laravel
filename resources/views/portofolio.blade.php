@@ -1,62 +1,79 @@
 @extends('layouts.app')
+
 @section('title', 'Portofolio Proyek - Greasycle')
 
-@section('content')
-<main>
-    <header class="relative bg-cover bg-center text-white py-16 md:py-20 px-[8%] text-center overflow-hidden"
-            style="background-image: linear-gradient(rgba(0,64,48,0.85), rgba(0,64,48,0.85)), url('{{ asset('assets/foto-2.jpeg') }}'); background-size: cover;">
-        <div class="max-w-4xl mx-auto relative z-10">
-            <h1 class="text-3xl md:text-4xl font-bold mb-3 tracking-tight">Portofolio Proyek</h1>
-            <p class="text-base md:text-lg opacity-90 font-light">Website Pengelolaan Kembali Minyak Jelantah — Greasycle</p>
-        </div>
-    </header>
+@push('styles')
+<style>
+    .fade-in { animation: fadeIn 0.8s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+@endpush
 
-    <section class="container mx-auto px-4 mt-12 max-w-5xl mb-24">
+@section('content')
+<main class="fade-in grow pb-24 relative z-10">
+    
+    {{-- ════════ HERO SECTION (Tanpa Gambar Latar Belakang) ════════ --}}
+    <section class="relative bg-primary text-white text-center py-24 md:py-32 px-6">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">Portofolio <span class="text-emerald-400">Proyek</span></h1>
+            <p class="text-base md:text-lg opacity-90 font-light max-w-2xl mx-auto">Platform Pengelolaan Kembali Minyak Jelantah Berbasis Website — Greasycle Indonesia</p>
+        </div>
+    </section>
+
+    {{-- ════════ KONTEN KARTU ════════ --}}
+    <section class="max-w-6xl mx-auto px-6 md:px-[8%] -mt-10 relative z-20">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white p-8 shadow-sm rounded-[30px] border border-gray-100 hover:-translate-y-2 transition duration-300">
-                <div class="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center mb-6 text-primary">
-                    <i class="fas fa-project-diagram text-xl"></i>
+            
+            {{-- Card Deskripsi --}}
+            <div class="bg-white p-10 shadow-lg shadow-slate-200/50 rounded-[30px] border border-slate-100 hover:-translate-y-2 transition duration-300 group">
+                <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition duration-300">
+                    <i class="fas fa-project-diagram text-2xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-primary mb-4">Deskripsi Proyek</h2>
-                <p class="text-gray-600 text-sm leading-relaxed text-justify">
-                    Greasycle adalah platform berbasis web yang dirancang untuk membantu masyarakat dalam mengelola minyak jelantah secara ramah lingkungan. Sistem ini menyediakan fitur penjadwalan penjemputan minyak bekas serta edukasi mengenai proses daur ulang.
+                <h2 class="text-xl font-extrabold text-slate-800 mb-4 tracking-tight">Deskripsi Proyek</h2>
+                <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                    Greasycle adalah platform berbasis web mutakhir yang dirancang khusus untuk memfasilitasi masyarakat dalam menyalurkan limbah secara aman dan menguntungkan. Sistem ini mengotomatisasi proses penjadwalan penjemputan limbah, konversi poin insentif, sekaligus menyajikan portal edukasi interaktif seputar ekonomi sirkular.
                 </p>
             </div>
 
-            <div class="bg-white p-8 shadow-sm rounded-[30px] border border-gray-100 hover:-translate-y-2 transition duration-300">
-                <div class="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center mb-6 text-primary">
-                    <i class="fas fa-star text-xl"></i>
+            {{-- Card Fitur --}}
+            <div class="bg-white p-10 shadow-lg shadow-slate-200/50 rounded-[30px] border border-slate-100 hover:-translate-y-2 transition duration-300 group">
+                <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition duration-300">
+                    <i class="fas fa-star text-2xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-primary mb-4">Fitur Utama</h2>
-                <ul class="space-y-3 text-sm text-gray-600 list-none p-0 m-0">
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-secondary"></i> Registrasi & Login Multilevel</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-secondary"></i> Sistem Transaksi & Riwayat</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-secondary"></i> Dashboard Pelanggan & Mitra</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-secondary"></i> Filter Data Real-time</li>
+                <h2 class="text-xl font-extrabold text-slate-800 mb-4 tracking-tight">Sorotan Fitur Utama</h2>
+                <ul class="space-y-4 text-sm text-slate-500 font-medium list-none p-0 m-0">
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-emerald-500 text-lg"></i> Autentikasi & Otorisasi Multilevel (Role-based)</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-emerald-500 text-lg"></i> Sistem Transaksi Validasi Real-time</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-emerald-500 text-lg"></i> Dashboard Analitik Pelanggan & Mitra</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-emerald-500 text-lg"></i> Rekapitulasi Riwayat Transaksi Tersistem</li>
                 </ul>
             </div>
             
-            <div class="bg-white p-8 shadow-sm rounded-[30px] border border-gray-100 hover:-translate-y-2 transition duration-300">
-                <div class="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center mb-6 text-primary">
-                    <i class="fas fa-laptop-code text-xl"></i>
+            {{-- Card Tech Stack --}}
+            <div class="bg-white p-10 shadow-lg shadow-slate-200/50 rounded-[30px] border border-slate-100 hover:-translate-y-2 transition duration-300 group">
+                <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition duration-300">
+                    <i class="fas fa-laptop-code text-2xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-primary mb-4">Teknologi & Tools</h2>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-gray-100 px-4 py-2 rounded-xl text-xs font-bold text-primary border border-gray-200">Laravel 11</span>
-                    <span class="bg-gray-100 px-4 py-2 rounded-xl text-xs font-bold text-primary border border-gray-200">Tailwind CSS</span>
-                    <span class="bg-gray-100 px-4 py-2 rounded-xl text-xs font-bold text-primary border border-gray-200">MySQL</span>
+                <h2 class="text-xl font-extrabold text-slate-800 mb-4 tracking-tight">Teknologi & Tools</h2>
+                <div class="flex flex-wrap gap-3">
+                    <span class="bg-slate-50 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 border border-slate-200 flex items-center gap-2"><i class="fab fa-laravel text-red-500 text-base"></i> Laravel 11</span>
+                    <span class="bg-slate-50 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 border border-slate-200 flex items-center gap-2"><i class="fab fa-css3-alt text-sky-500 text-base"></i> Tailwind CSS</span>
+                    <span class="bg-slate-50 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 border border-slate-200 flex items-center gap-2"><i class="fas fa-database text-orange-400 text-base"></i> MySQL DB</span>
+                    <span class="bg-slate-50 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 border border-slate-200 flex items-center gap-2"><i class="fab fa-git-alt text-orange-600 text-base"></i> Git & GitHub</span>
                 </div>
             </div>
 
-            <div class="bg-white p-8 shadow-sm rounded-[30px] border border-gray-100 hover:-translate-y-2 transition duration-300">
-                <div class="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center mb-6 text-primary">
-                    <i class="fas fa-bullseye text-xl"></i>
+            {{-- Card Tujuan --}}
+            <div class="bg-white p-10 shadow-lg shadow-slate-200/50 rounded-[30px] border border-slate-100 hover:-translate-y-2 transition duration-300 group">
+                <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition duration-300">
+                    <i class="fas fa-bullseye text-2xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-primary mb-4">Tujuan Proyek</h2>
-                <p class="text-gray-600 text-sm leading-relaxed text-justify">
-                    Proyek ini bertujuan untuk mengurangi pencemaran lingkungan akibat pembuangan minyak jelantah sembarangan serta mendukung konsep ekonomi sirkular.
+                <h2 class="text-xl font-extrabold text-slate-800 mb-4 tracking-tight">Objektif Implementasi</h2>
+                <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                    Secara esensial, arsitektur sistem ini dibangun untuk memutus mata rantai pencemaran air dan tanah akibat pembuangan limbah domestik yang tidak terstandarisasi. Lebih dari itu, Greasycle diharapkan mampu menstimulasi kesadaran publik tentang potensi ekonomi tersembunyi di balik limbah.
                 </p>
             </div>
+            
         </div>
     </section>
 </main>

@@ -1,95 +1,187 @@
 @extends('layouts.app')
 
+@section('title', 'Beranda - Greasycle')
+
+@push('styles')
+<style>
+    /* Animasi khusus halaman beranda */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.7s ease forwards; }
+    .fade-up-2 { animation: fadeUp 0.7s 0.15s ease forwards; opacity: 0; }
+    .fade-up-3 { animation: fadeUp 0.7s 0.3s ease forwards; opacity: 0; }
+</style>
+@endpush
+
 @section('content')
-<header class="relative text-white py-20 px-[8%] text-center overflow-hidden"
-        style="background-image: linear-gradient(rgba(0,64,48,0.85), rgba(0,64,48,0.85)), url('{{ asset('assets/foto-2.jpeg') }}'); background-size: cover; background-position: center;">
-    <div class="max-w-4xl mx-auto relative z-10">
-        <h1 class="text-4xl md:text-5xl font-bold mb-6 tracking-tight leading-tight text-white">
-            Ubah Limbah Jadi <span class="text-accent italic">Energi Hijau</span>
-        </h1>
-        <p class="text-base md:text-lg opacity-90 mb-10 font-light max-w-2xl mx-auto leading-relaxed text-gray-100">
-            Kelola limbah Anda secara cerdas bersama Greasycle. Ciptakan lingkungan bersih dan dapatkan manfaat ekonominya.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-            <button onclick="openAuth()" class="bg-white text-primary px-8 py-3 rounded-full font-bold hover:bg-accent transition shadow-xl text-sm">Mulai Sekarang</button>
-            <a href="{{ route('about') }}" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white/10 transition text-sm">Pelajari Lebih Lanjut</a>
-        </div>
-    </div>
-</header>
-
-<section class="py-24 px-[8%] bg-white text-center">
-    <div class="max-w-6xl mx-auto">
-        <div class="mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Layanan Kami</h2>
-            <p class="text-gray-500 max-w-2xl mx-auto font-medium">Memberikan solusi pengelolaan limbah yang mudah dan terintegrasi untuk masyarakat.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            <div class="p-10 bg-[#fcfdfd] border border-gray-100 rounded-[30px] shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-300 group text-center">
-                <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary transition duration-300">
-                    <svg class="w-8 h-8 text-primary group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-primary mb-4">Penjemputan Rutin</h3>
-                <p class="text-sm text-gray-500 leading-relaxed">Kami menjemput minyak jelantah langsung dari dapur Anda secara terjadwal.</p>
-            </div>
-
-            <div class="p-10 bg-[#fcfdfd] border border-gray-100 rounded-[30px] shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-300 group text-center">
-                <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary transition duration-300">
-                    <svg class="w-8 h-8 text-primary group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-primary mb-4">Ramah Lingkungan</h3>
-                <p class="text-sm text-gray-500 leading-relaxed">Limbah yang dikumpulkan diolah menjadi biofuel untuk masa depan yang lebih hijau.</p>
-            </div>
-
-            <div class="p-10 bg-[#fcfdfd] border border-gray-100 rounded-[30px] shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-300 group text-center">
-                <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary transition duration-300">
-                    <svg class="w-8 h-8 text-primary group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-primary mb-4">Insentif Ekonomi</h3>
-                <p class="text-sm text-gray-500 leading-relaxed">Dapatkan nilai ekonomi tambahan atau saldo digital untuk setiap liter jelantah.</p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<section class="py-24 px-[8%] bg-accent/20 text-center">
-    <div class="max-w-6xl mx-auto">
-        <div class="mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Our Founders</h2>
-            <p class="text-gray-500 max-w-2xl mx-auto">Kenali tim mahasiswa Sistem Informasi di balik layar Greasycle.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-[40px] shadow-sm hover:shadow-2xl transition duration-500 group block">
-                <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary group-hover:scale-110 transition duration-500">
-                    <i class="fas fa-user-circle text-5xl"></i> 
-                </div>
-                <h3 class="text-lg font-bold text-primary">Elvina Meisya Azzahra</h3>
-                <span class="text-xs text-secondary font-semibold tracking-widest uppercase">UI/UX Designer</span>
-            </div>
-            <div class="bg-white p-8 rounded-[40px] shadow-sm hover:shadow-2xl transition duration-500 group block">
-                <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary group-hover:scale-110 transition duration-500">
-                    <i class="fas fa-user-circle text-5xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-primary">Zahlul Noer Laily</h3>
-                <span class="text-xs text-secondary font-semibold tracking-widest uppercase">Lead Developer</span>
-            </div>
-            <div class="bg-white p-8 rounded-[40px] shadow-sm hover:shadow-2xl transition duration-500 group block">
-                <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary group-hover:scale-110 transition duration-500">
-                    <i class="fas fa-user-circle text-5xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-primary">Masyito Indi Kartika</h3>
-                <span class="text-xs text-secondary font-semibold tracking-widest uppercase">System Analyst</span>
+<main class="grow">
+    {{-- HERO SECTION --}}
+    <section class="relative min-h-[88vh] flex items-center justify-center text-center text-white px-6"
+             style="background: linear-gradient(rgba(0,64,48,0.85), rgba(0,64,48,0.85)),
+                    url('{{ asset('assets/images/hero-bg.jpeg') }}') center/cover no-repeat fixed;">
+                    <div class="max-w-3xl">
+            <h1 class="fade-up-2 text-4xl md:text-6xl font-extrabold leading-tight mb-6 text-white tracking-tight">
+                Ubah Limbah Jadi<br><span class="text-emerald-400">Energi Hijau</span>
+            </h1>
+            <p class="fade-up-3 text-base md:text-lg text-white/80 max-w-xl mx-auto mb-10 leading-relaxed font-light">
+                Kelola limbah rumah tangga dan minyak jelantah Anda secara cerdas bersama Greasycle. Ciptakan lingkungan yang lebih bersih dan nikmati manfaat insentif ekonominya.
+            </p>
+            <div class="fade-up-3 flex flex-wrap justify-center gap-4">
+                @auth
+                    <a href="{{ route('pelanggan.dashboard') }}" class="bg-white text-primary font-bold px-8 py-3.5 rounded-xl hover:bg-emerald-50 transition shadow-lg text-sm flex items-center">
+                        <i class="fas fa-columns mr-2 text-emerald-500"></i> Buka Portal
+                    </a>
+                @else
+                    <button onclick="openAuth(); switchForm('register');" class="bg-white text-primary font-bold px-8 py-3.5 rounded-xl hover:bg-emerald-50 transition shadow-lg text-sm flex items-center">
+                        <i class="fas fa-play-circle mr-2 text-emerald-500"></i> Mulai Sekarang
+                    </button>
+                @endauth
+                
+                <a href="{{ route('about') }}"
+                   class="border border-white/40 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition text-sm flex items-center backdrop-blur-sm">
+                    <i class="fas fa-info-circle mr-2"></i> Pelajari Sistem Kami
+                </a>
             </div>
         </div>
-    </div>
-</section>
+
+        {{-- Tombol Segitiga / Chevron - Sekarang Aktif & Bisa Diklik --}}
+        <div onclick="document.getElementById('stats-section').scrollIntoView({ behavior: 'smooth' });" 
+             class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/40 hover:text-white transition animate-bounce cursor-pointer z-20">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    {{-- STATS SECTION --}}
+    <section id="stats-section" class="py-12 px-[8%] bg-primary border-t-4 border-emerald-500">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center max-w-5xl mx-auto">
+            <div>
+                <h4 class="text-3xl font-bold text-white">1.250+</h4>
+                <p class="text-emerald-200/70 text-[10px] uppercase font-bold tracking-[0.15em] mt-1.5">Liter Terkumpul</p>
+            </div>
+            <div>
+                <h4 class="text-3xl font-bold text-white">248+</h4>
+                <p class="text-emerald-200/70 text-[10px] uppercase font-bold tracking-[0.15em] mt-1.5">Pelanggan Aktif</p>
+            </div>
+            <div>
+                <h4 class="text-3xl font-bold text-white">14</h4>
+                <p class="text-emerald-200/70 text-[10px] uppercase font-bold tracking-[0.15em] mt-1.5">Mitra Pengelola</p>
+            </div>
+            <div>
+                <h4 class="text-3xl font-bold text-white">1.2 Jt</h4>
+                <p class="text-emerald-200/70 text-[10px] uppercase font-bold tracking-[0.15em] mt-1.5">Liter Air Terjaga</p>
+            </div>
+        </div>
+    </section>
+
+    {{-- SERVICES SECTION --}}
+    <section class="py-24 px-[8%] bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-3 tracking-tight">Layanan Utama <span class="text-emerald-600">Kami</span></h2>
+                <p class="text-slate-500 text-sm font-medium">Memberikan solusi pengelolaan limbah yang mudah, cepat, dan terintegrasi.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-slate-50 p-10 rounded-3xl text-center hover:-translate-y-2 transition duration-300 border border-slate-100 shadow-sm">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600">
+                        <i class="fas fa-truck-loading text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-3">Penjemputan Rutin</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Kami menjemput minyak jelantah langsung dari dapur Anda secara terjadwal tanpa perlu repot keluar rumah.</p>
+                </div>
+                <div class="bg-slate-50 p-10 rounded-3xl text-center hover:-translate-y-2 transition duration-300 border border-slate-100 shadow-sm">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600">
+                        <i class="fas fa-seedling text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-3">Ramah Lingkungan</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Limbah yang dikumpulkan diolah menjadi energi biodiesel baru untuk menciptakan masa depan yang lebih hijau.</p>
+                </div>
+                <div class="bg-slate-50 p-10 rounded-3xl text-center hover:-translate-y-2 transition duration-300 border border-slate-100 shadow-sm">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600">
+                        <i class="fas fa-wallet text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-3">Insentif Ekonomi</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Dapatkan saldo digital untuk setiap liter minyak jelantah yang Anda kumpulkan dan salurkan melalui platform kami.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- HOW IT WORKS SECTION --}}
+    <section class="py-24 px-[8%] bg-emerald-50/50 border-t border-b border-emerald-100/50">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-3 tracking-tight">Cara Kerja Greasycle</h2>
+                <p class="text-slate-500 text-sm font-medium">Hanya butuh 4 langkah mudah untuk mulai berkontribusi pada lingkungan.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center group relative">
+                    <div class="w-20 h-20 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-5 border-b-4 border-b-emerald-500 group-hover:bg-emerald-600 transition duration-300">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3081/3081840.png" class="w-10 opacity-70 group-hover:invert group-hover:opacity-100 transition" alt="">
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xs font-bold border border-emerald-200">1</div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">Kumpulkan</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Saring & simpan limbah jelantah di wadah tertutup</p>
+                    <div class="hidden md:block absolute top-10 -right-4 text-slate-300 text-xl font-bold">→</div>
+                </div>
+                <div class="text-center group relative">
+                    <div class="w-20 h-20 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-5 border-b-4 border-b-emerald-500 group-hover:bg-emerald-600 transition duration-300">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3652/3652191.png" class="w-10 opacity-70 group-hover:invert group-hover:opacity-100 transition" alt="">
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xs font-bold border border-emerald-200">2</div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">Ajukan Jadwal</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Isi form volume limbah di dashboard portal pelanggan</p>
+                    <div class="hidden md:block absolute top-10 -right-4 text-slate-300 text-xl font-bold">→</div>
+                </div>
+                <div class="text-center group relative">
+                    <div class="w-20 h-20 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-5 border-b-4 border-b-emerald-500 group-hover:bg-emerald-600 transition duration-300">
+                        <img src="https://cdn-icons-png.flaticon.com/128/709/709790.png" class="w-10 opacity-70 group-hover:invert group-hover:opacity-100 transition" alt="">
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xs font-bold border border-emerald-200">3</div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">Kurir Datang</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Mitra tiba di lokasi & memvalidasi takaran volume</p>
+                    <div class="hidden md:block absolute top-10 -right-4 text-slate-300 text-xl font-bold">→</div>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-5 border-b-4 border-b-emerald-500 group-hover:bg-emerald-600 transition duration-300">
+                        <img src="https://cdn-icons-png.flaticon.com/128/2454/2454282.png" class="w-10 opacity-70 group-hover:invert group-hover:opacity-100 transition" alt="">
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xs font-bold border border-emerald-200">4</div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">Cair Saldo</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Volume dikonversi jadi saldo digital di akunmu</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- TEAM SECTION --}}
+    <section class="py-24 px-[8%] bg-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-3 tracking-tight">Tim <span class="text-emerald-600">Pengembang</span></h2>
+                <p class="text-slate-500 text-sm font-medium">Kenali orang-orang hebat di balik berdirinya Greasycle.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 justify-items-center">
+                <a href="{{ route('profile.elvina') }}" class="group bg-slate-50 rounded-3xl p-8 text-center hover:-translate-y-2 transition duration-300 border border-slate-100 shadow-sm w-full block">
+                    <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-5 text-white text-3xl font-extrabold group-hover:scale-105 transition shadow-md shadow-emerald-200">E</div>
+                    <h3 class="font-bold text-slate-800 text-base mb-1">Elvina Meisya Azzahra</h3>
+                    <span class="inline-block mt-1 text-[10px] text-emerald-700 font-bold bg-emerald-100 border border-emerald-200 px-3 py-1 rounded-lg tracking-wider uppercase">UI/UX Designer</span>
+                </a>
+
+                <a href="{{ route('profile.zahlul') }}" class="group bg-slate-50 rounded-3xl p-8 text-center hover:-translate-y-2 transition duration-300 border border-slate-100 shadow-sm w-full block">
+                    <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-5 text-white text-3xl font-extrabold group-hover:scale-105 transition shadow-md shadow-emerald-200">Z</div>
+                    <h3 class="font-bold text-slate-800 text-base mb-1">Zahlul Noer Laily</h3>
+                    <span class="inline-block mt-1 text-[10px] text-emerald-700 font-bold bg-emerald-100 border border-emerald-200 px-3 py-1 rounded-lg tracking-wider uppercase">Lead Developer</span>
+                </a>
+
+                <a href="{{ route('profile.indi') }}" class="group bg-slate-50 rounded-3xl p-8 text-center hover:-translate-y-2 transition duration-300 border border-slate-100 shadow-sm w-full block">
+                    <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-5 text-white text-3xl font-extrabold group-hover:scale-105 transition shadow-md shadow-emerald-200">M</div>
+                    <h3 class="font-bold text-slate-800 text-base mb-1">Masyito Indi Kartika</h3>
+                    <span class="inline-block mt-1 text-[10px] text-emerald-700 font-bold bg-emerald-100 border border-emerald-200 px-3 py-1 rounded-lg tracking-wider uppercase">System Analyst</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
 @endsection

@@ -1,78 +1,86 @@
 @extends('layouts.app')
+
 @section('title', 'Tentang Kami - Greasycle')
 
+@push('styles')
+<style>
+    /* Animasi masuk halaman */
+    .fade-in { animation: fadeIn 0.8s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    /* Modifikasi FAQ Animation */
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; }
+    .faq-item.active .faq-answer { max-height: 500px; } /* Diperbesar agar teks panjang tidak terpotong */
+    .faq-chevron { transition: transform 0.4s ease-in-out; }
+    .faq-item.active .faq-chevron { transform: rotate(180deg); }
+    .faq-item.active { 
+        border-color: #34d399; 
+        background-color: #fff; 
+        box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1); 
+    }
+</style>
+@endpush
+
 @section('content')
-<main class="fade-in">
-    <section class="relative bg-cover bg-center text-white text-center py-20 md:py-32 px-5" 
-             style="background-image: linear-gradient(rgba(0,64,48,0.8), rgba(0,64,48,0.8)), url('{{ asset('assets/foto-2.jpeg') }}'); background-size: cover;">
-        <h1 class="text-3xl md:text-5xl font-bold mb-3 tracking-tight">Tentang Kami</h1>
-        <p class="text-base md:text-lg opacity-90 max-w-2xl mx-auto font-light">Mengenal lebih jauh visi kami untuk lingkungan yang lebih bersih melalui pengelolaan limbah minyak.</p>
+<main class="fade-in grow">
+    {{-- HERO SECTION --}}
+    <section class="relative bg-primary text-white text-center py-24 md:py-36 px-6">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">Tentang <span class="text-emerald-400">Kami</span></h1>
+        <p class="text-base md:text-lg opacity-90 max-w-2xl mx-auto font-light leading-relaxed">Mengenal lebih jauh visi kami untuk menciptakan lingkungan yang lebih bersih melalui pengelolaan limbah minyak jelantah.</p>
     </section>
 
-    <section class="py-20 px-[8%] bg-white">
-        <div class="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div class="w-full">
-                <img src="{{ asset('assets/foto-2.jpeg') }}" alt="Greasycle Vision"
-                     class="w-full rounded-[30px] shadow-[15px_15px_0px_0px_#d1e7e0] object-cover h-[300px] md:h-[400px]">
+    {{-- VISION SECTION --}}
+    <section class="py-24 px-6 md:px-[8%] bg-white">
+        <div class="grid md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
+            <div class="w-full relative group">
+                <div class="absolute inset-0 bg-emerald-500 rounded-[30px] transform translate-x-4 translate-y-4 -z-10 transition duration-300 group-hover:translate-x-6 group-hover:translate-y-6"></div>
+                <img src="{{ asset('assets/images/foto-2.jpeg') }}" alt="Greasycle Vision"
+                     class="w-full rounded-[30px] shadow-sm object-cover h-[350px] md:h-[450px] border border-slate-100 z-10 relative">
             </div>
             <div class="space-y-6">
-                <h2 class="text-3xl font-bold text-primary">Apa itu Greasycle?</h2>
-                <div class="space-y-4 text-justify text-gray-700 leading-relaxed text-base">
-                    <p>Greasycle adalah platform digital yang membantu masyarakat mengelola limbah rumah tangga dengan cara yang lebih mudah, aman, dan bermanfaat. Kami menghubungkan ibu rumah tangga dengan mitra pengumpul untuk mengubah limbah menjadi energi terbarukan.</p>
-                    <p>Kami percaya bahwa perubahan besar bisa dimulai dari langkah kecil di rumah. Dengan menyalurkan limba rumah tangga melalui Greasycle, Anda ikut menjaga lingkungan, mengurangi pencemaran, serta mendukung sistem ekonomi sirkular yang berkelanjutan.</p>
+                <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">Apa itu <span class="text-emerald-600">Greasycle?</span></h2>
+                <div class="space-y-5 text-slate-500 leading-relaxed text-sm font-medium">
+                    <p>Greasycle adalah platform digital inovatif yang berdedikasi untuk mentransformasi limbah rumah tangga, khususnya minyak jelantah, menjadi sumber daya yang bernilai ekonomi dan ramah lingkungan.</p>
+                    <p>Minyak jelantah seringkali dibuang sembarangan ke wastafel atau selokan, yang pada akhirnya akan menyumbat pipa, mencemari tanah, dan merusak ekosistem perairan. Kami hadir untuk memutus rantai pencemaran tersebut dengan menyediakan layanan penjemputan limbah yang mudah, terstruktur, dan aman.</p>
+                    <p>Melalui Greasycle, setiap tetes minyak jelantah yang Anda setorkan tidak akan terbuang sia-sia. Limbah tersebut akan dikelola dan disalurkan ke pabrik pengolahan untuk diubah menjadi energi terbarukan berupa Biodiesel. Sebagai bentuk apresiasi atas kontribusi Anda menjaga bumi, kami memberikan insentif berupa saldo digital yang dapat dicairkan.</p>
+                    <p class="font-bold text-emerald-700">Mari bergabung dalam gerakan sirkular ekonomi ini. Bersama Greasycle, kita ciptakan bumi yang lebih hijau dan masa depan yang lebih berkelanjutan.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-20 px-[8%] bg-[#fcfdfd] border-t border-gray-50">
-        <h2 class="text-center text-3xl font-bold text-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-secondary after:mx-auto after:mt-2">Kenapa Greasycle?</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div class="bg-white p-8 rounded-[30px] shadow-sm border border-gray-100 hover:-translate-y-2 transition duration-300 text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/2913/2913454.png" class="w-16 mx-auto mb-6" alt="Eco">
-                <h3 class="text-xl font-bold text-primary mb-3">Eco-Friendly</h3>
-                <p class="text-gray-500 text-sm">Membantu mengurangi pencemaran dengan mengelola limbah secara bertanggung jawab.</p>
-            </div>
-            <div class="bg-white p-8 rounded-[30px] shadow-sm border border-gray-100 hover:-translate-y-2 transition duration-300 text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/2966/2966327.png" class="w-16 mx-auto mb-6" alt="Health">
-                <h3 class="text-xl font-bold text-primary mb-3">Sehat & Aman</h3>
-                <p class="text-gray-500 text-sm">Mencegah penyalahgunaan limbah ilegal yang membahayakan kesehatan.</p>
-            </div>
-            <div class="bg-white p-8 rounded-[30px] shadow-sm border border-gray-100 hover:-translate-y-2 transition duration-300 text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/2454/2454282.png" class="w-16 mx-auto mb-6" alt="Economy">
-                <h3 class="text-xl font-bold text-primary mb-3">Manfaat Ekonomi</h3>
-                <p class="text-gray-500 text-sm">Mengubah limbah dapur menjadi nilai ekonomi tambahan melalui sistem insentif digital.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 px-[8%] bg-white border-t border-gray-50">
+    {{-- FAQ SECTION --}}
+    <section class="py-24 px-6 md:px-[8%] bg-white border-t border-slate-100">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-start">
-            <div class="space-y-6">
+            <div class="space-y-8">
                 <div>
-                    <h2 class="text-3xl font-bold text-primary mb-4">FAQ Edukasi</h2>
-                    <p class="text-gray-500 text-sm italic mb-8">Pelajari mengapa pengelolaan jelantah sangat penting bagi bumi kita.</p>
+                    <h2 class="text-3xl font-extrabold text-slate-800 mb-3 tracking-tight">FAQ <span class="text-emerald-600">Edukasi</span></h2>
+                    <p class="text-sm text-slate-500">Pertanyaan yang paling sering diajukan seputar pengelolaan minyak jelantah dan layanan kami.</p>
                 </div>
-                
-                <div class="space-y-3">
+                <div class="space-y-4">
                     @php 
                     $faqs = [
-                        ["Apa itu minyak jelantah?", "Minyak goreng yang sudah digunakan berulang kali. Biasanya warna menjadi lebih gelap, berbau, dan kualitasnya sudah menurun."],
-                        ["Mengapa tidak boleh dibuang sembarangan?", "Dapat menyebabkan penyumbatan saluran air (clogging), pencemaran tanah, dan merusak ekosistem air bersih."],
-                        ["Bolehkah digunakan kembali untuk memasak?", "Sangat tidak disarankan. Penggunaan berulang memicu zat karsinogenik yang berbahaya bagi kesehatan jantung dan pembuluh darah."],
-                        ["Bagaimana cara menyimpan sebelum disetor?", "Tunggu minyak hingga dingin, saring dari sisa kotoran, lalu simpan dalam wadah plastik atau jerigen yang tertutup rapat."],
-                        ["Apakah layanan penjemputan ini dipungut biaya?", "Tidak, layanan penjemputan Greasycle sepenuhnya gratis. Anda justru mendapatkan insentif dari limbah yang Anda salurkan."]
+                        ["Apa itu minyak jelantah?", "Minyak jelantah adalah minyak goreng bekas pemakaian rumah tangga atau restoran yang sudah digunakan berulang kali dan tidak layak lagi untuk dikonsumsi."],
+                        ["Mengapa minyak jelantah tidak boleh dibuang sembarangan?", "Membuang jelantah ke wastafel atau tanah dapat menyumbat saluran air, merusak kualitas air tanah, dan jika berakhir di laut, akan menutupi permukaan air sehingga membunuh biota laut."],
+                        ["Apakah layanan penjemputan ini gratis?", "Ya, layanan penjemputan Greasycle sepenuhnya gratis tanpa ada biaya tersembunyi apa pun."],
+                        ["Berapa minimal liter untuk penjemputan?", "Kami melayani penjemputan dengan minimal volume 5 liter. Untuk di bawah itu, kami sarankan Anda untuk mengumpulkannya terlebih dahulu di wadah tertutup."],
+                        ["Bagaimana cara menyimpan minyak jelantah yang benar?", "Saring sisa makanan dari minyak, tunggu hingga suhu minyak benar-benar dingin, lalu masukkan ke dalam jerigen atau botol plastik yang tertutup rapat agar tidak tumpah."],
+                        ["Apa yang terjadi pada minyak jelantah yang saya setorkan?", "Minyak yang terkumpul akan kami salurkan ke pabrik pengolahan mitra yang bersertifikat untuk didaur ulang menjadi energi terbarukan, yaitu Biodiesel."],
+                        ["Kapan saldo digital saya akan cair?", "Saldo akan otomatis dikonversi dan masuk ke dompet akun Greasycle Anda maksimal 1x24 jam setelah kurir kami memvalidasi takaran volume di lokasi penjemputan."],
+                        ["Apakah Greasycle menerima minyak selain sawit?", "Ya, kami menerima berbagai jenis minyak nabati bekas pakai, termasuk minyak canola, minyak samin, dan minyak zaitun."],
+                        ["Saya pemilik restoran, apakah bisa bekerja sama rutin?", "Tentu saja! Kami memiliki program khusus B2B untuk pelaku usaha (restoran/cafe/hotel) dengan jadwal penjemputan rutin dan insentif yang lebih menarik."],
+                        ["Bagaimana jika kurir belum datang pada hari H?", "Anda dapat melacak status penjemputan secara real-time di dashboard Anda, atau menghubungi layanan pelanggan kami melalui halaman Kontak."]
                     ];
                     @endphp
-
+                    
                     @foreach($faqs as $i => $faq)
                     <div class="faq-item border border-gray-200 rounded-2xl bg-[#fcfdfd] transition duration-300">
                         <button class="w-full p-5 flex justify-between items-center text-left focus:outline-none" onclick="toggleFaq({{ $i }})">
-                            <span class="font-bold text-primary text-sm">{{ ($i+1) . ". " . $faq[0] }}</span>
-                            <i class="faq-chevron fas fa-chevron-down text-secondary text-xs transition-transform duration-300"></i>
+                            <span class="font-bold text-primary text-sm pr-4">{{ $faq[0] }}</span>
+                            <i class="faq-chevron fas fa-chevron-down text-emerald-600 text-xs shrink-0"></i>
                         </button>
                         <div class="faq-answer px-5">
-                            <p class="pb-5 text-gray-500 text-sm italic text-left leading-relaxed">{{ $faq[1] }}</p>
+                            <p class="pb-5 text-gray-500 text-sm italic leading-relaxed">{{ $faq[1] }}</p>
                         </div>
                     </div>
                     @endforeach
@@ -80,7 +88,9 @@
             </div>
 
             <div class="sticky top-32 hidden md:block">
-                <img src="{{ asset('assets/foto-1.jpeg') }}" class="w-full h-[550px] object-cover rounded-[40px] shadow-2xl transition hover:scale-[1.02] duration-500">
+                <div class="relative rounded-3xl p-2 bg-gradient-to-br from-emerald-100 to-teal-50 shadow-lg border border-white">
+                     <img src="{{ asset('assets/images/foto-1.jpeg') }}" class="w-full h-[550px] object-cover rounded-2xl shadow-sm">
+                </div>
             </div>
         </div>
     </section>
@@ -91,10 +101,12 @@
 <script>
     function toggleFaq(index) {
         const items = document.querySelectorAll('.faq-item');
-        items.forEach((item, i) => {
+        items.forEach((item, i) => { 
+            // Jika FAQ yang diklik sama dengan item saat ini, toggle (buka/tutup)
             if (i === index) {
                 item.classList.toggle('active');
             } else {
+                // Tutup FAQ yang lain agar terlihat rapi (mode accordion)
                 item.classList.remove('active');
             }
         });

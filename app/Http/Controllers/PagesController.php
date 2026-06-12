@@ -34,7 +34,7 @@ class PagesController extends Controller
     public function sendContact(Request $request) 
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama'  => 'required|string|max:255',
             'email' => 'required|email',
             'pesan' => 'required|string',
         ]);
@@ -44,22 +44,22 @@ class PagesController extends Controller
     }
 
     // =========================================================================
-    // REVISI: TAMBAHAN FUNGSI PROFILE TIM FOUNDERS GREASYCLE
+    // FUNGSI PROFILE TIM FOUNDERS GREASYCLE
     // =========================================================================
 
-    // Tampilan Halaman Profil Elvina 
+    // Tampilan Halaman Profil Elvina (profile_elvina.blade.php)
     public function profileElvina()
     {
         return view('profile_elvina');
     }
 
-    // Tampilan Halaman Profil Zahlul
+    // Tampilan Halaman Profil Zahlul (profile_zahlul.blade.php)
     public function profileZahlul()
     {
         return view('profile_zahlul');
     }
 
-    // Tampilan Halaman Profil Indi 
+    // Tampilan Halaman Profil Indi (profile_indi.blade.php)
     public function profileIndi()
     {
         return view('profile_indi');
