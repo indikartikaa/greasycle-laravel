@@ -237,7 +237,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1 mt-2">
-                        <label class="text-xs font-semibold text-primary">Password <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-semibold text-primary">Password </label>
                         <div class="relative">
                             <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 text-sm"></i>
                             <input type="password" id="regPassword" name="password" placeholder="Min. 6 karakter"

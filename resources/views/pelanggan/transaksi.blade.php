@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Setor Minyak - Greasycle</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script>
         tailwind.config = {
@@ -16,93 +16,112 @@
                         secondary: '#2d6a4f',
                         accent: '#d1e7e0',
                         lightGreen: '#f0f7f4',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-    <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-emerald-200">
 
-    {{-- NAVBAR --}}
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+    {{-- NAVBAR ELEGANT (Sama dengan Dashboard) --}}
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/50 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
             
             {{-- Logo --}}
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md">
-                    <i class="fas fa-recycle text-base"></i>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-200/50">
+                    <i class="fas fa-recycle text-xl"></i>
                 </div>
                 <div class="leading-tight">
-                    <h1 class="text-xl font-extrabold tracking-tight text-slate-900">
+                    <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">
                         Greasy<span class="text-emerald-500">cle</span>
                     </h1>
-                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-[0.15em]">
-                        Pelanggan Portal
+                    <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-[0.2em] mt-0.5">
+                        Portal Pelanggan
                     </p>
                 </div>
             </div>
 
-            {{-- REVISI MENU: Menyesuaikan status tombol aktif biar kontras seimbang --}}
-            <div class="flex flex-wrap items-center gap-3">
-                <a href="{{ route('pelanggan.dashboard') }}"
-                   class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-semibold transition flex items-center gap-2 text-xs md:text-sm">
-                    <i class="fas fa-chart-line"></i> Dashboard
+            {{-- Menu Navigasi --}}
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex flex-col items-end mr-2">
+                    <span class="text-sm font-bold text-slate-800">{{ Auth::user()->nama }}</span>
+                    <span class="text-[10px] text-slate-400 font-medium bg-slate-100 px-2 py-0.5 rounded-full mt-1 uppercase">{{ Auth::user()->role }}</span>
+                </div>
+                <a href="{{ route('pelanggan.dashboard') }}" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-emerald-500 hover:text-white hover:shadow-md transition-all font-bold text-sm flex items-center gap-2">
+                    <i class="fas fa-chart-line"></i> <span class="hidden sm:inline">Dashboard</span>
                 </a>
-                <a href="{{ route('pelanggan.setor') }}"
-                   class="px-5 py-2.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 font-semibold flex items-center gap-2 text-xs md:text-sm">
-                    <i class="fas fa-plus-circle"></i> Setor Minyak
-                </a>
-                <a href="/"
-                   class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all duration-300 flex items-center gap-2 text-xs md:text-sm">
-                    <i class="fas fa-globe"></i> Halaman Publik
-                </a>
+                <form action="{{ route('logout') }}" method="POST" class="m-0">
+                    @csrf
+                    <button type="submit" class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-red-50 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm" title="Keluar (Logout)">
+                        <i class="fas fa-power-off"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </nav>
 
     {{-- KONTEN FORM SETOR --}}
-    <div class="max-w-4xl mx-auto px-6 py-10 grow w-full">
-        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+    <main class="max-w-4xl mx-auto px-6 py-12 grow w-full">
+        
+        <div class="bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden">
             
-            {{-- HEADER BANNER WHITE MINIMALIST BOX --}}
-            <div class="mb-8 bg-white border border-slate-200 p-5 rounded-2xl shadow-2xs">
-                <a href="{{ route('pelanggan.dashboard') }}" class="text-emerald-600 hover:text-emerald-700 text-xs font-bold flex items-center gap-1.5 transition">
-                    <i class="fas fa-chevron-left text-[10px]"></i> Kembali ke Dashboard
+            {{-- Aksen Dekorasi Kanan Atas --}}
+            <div class="absolute -right-10 -top-10 opacity-5 pointer-events-none">
+                <i class="fas fa-truck-loading text-[200px] text-emerald-800"></i>
+            </div>
+
+            {{-- HEADER TITLE --}}
+            <div class="mb-10 relative z-10">
+                <a href="{{ route('pelanggan.dashboard') }}" class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-bold transition-all mb-4 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg w-fit">
+                    <i class="fas fa-arrow-left"></i> Kembali
                 </a>
-                <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight mt-2">Form Pengajuan Setor Minyak</h2>
-                <p class="text-slate-400 text-xs font-medium mt-1">Pilih wilayah regional Kota Surabaya untuk pemetaan tim penjemputan lapangan.</p>
+                <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">Formulir <span class="text-emerald-600">Penjemputan</span></h2>
+                <p class="text-slate-500 text-sm font-medium mt-2 max-w-xl leading-relaxed">
+                    Pastikan takaran volume yang Anda masukkan sesuai. Tim kurir kami akan memvalidasi ulang volume tersebut di lokasi Anda.
+                </p>
             </div>
 
             {{-- FORMULIR AJUAN --}}
-            <form action="{{ route('pelanggan.setor.store') }}" method="POST" onsubmit="gabungkanAlamat()" class="space-y-6">
+            <form action="{{ route('pelanggan.setor.store') }}" method="POST" onsubmit="gabungkanAlamat()" class="relative z-10 space-y-8">
                 @csrf
-                
                 <input type="hidden" name="alamat_jemput" id="alamat_jemput_asli">
 
-                {{-- REVISI FIELD: Background diganti putih dengan border slate-300 biar kontras tajam --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Estimasi Volume (Liter) <span class="text-red-500">*</span></label>
-                        <input type="number" name="volume" step="0.1" min="0.1" placeholder="Masukkan angka (contoh: 3.5)" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all text-slate-800 placeholder-slate-400 font-medium" required>
-                    </div>
+                {{-- KOTAK INPUT: DATA LIMBAH --}}
+                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-6 md:p-8">
+                    <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 mb-6 uppercase tracking-widest border-b border-slate-200 pb-3">
+                        <i class="fas fa-flask text-emerald-500 text-lg"></i> Detail Limbah
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-2">Estimasi Volume <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <input type="number" name="volume" step="0.1" min="0.1" placeholder="Cth: 3.5" class="w-full pl-4 pr-12 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all shadow-sm" required>
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">Liter</span>
+                            </div>
+                        </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Catatan Tambahan (Opsional)</label>
-                        <input type="text" name="catatan" placeholder="Contoh: Pagar warna putih / titip satpam" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all text-slate-800 placeholder-slate-400 font-medium">
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-2">Catatan Kurir (Opsional)</label>
+                            <input type="text" name="catatan" placeholder="Cth: Titip satpam depan / Pagar hitam" class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all shadow-sm">
+                        </div>
                     </div>
                 </div>
 
-                <div class="border-t border-slate-100 pt-6 space-y-4">
-                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-3">
-                        <i class="fas fa-map-marked-alt text-emerald-600"></i> Detail Struktur Wilayah Penjemputan
+                {{-- KOTAK INPUT: LOKASI PENJEMPUTAN --}}
+                <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-6 md:p-8">
+                    <h3 class="text-sm font-bold text-emerald-800 flex items-center gap-2 mb-6 uppercase tracking-widest border-b border-emerald-200 pb-3">
+                        <i class="fas fa-map-location-dot text-emerald-600 text-lg"></i> Pemetaan Lokasi Surabaya
                     </h3>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Wilayah Region <span class="text-red-500">*</span></label>
-                            <select id="region" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all text-slate-800 font-medium" required onchange="filterKecamatan()">
+                            <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-2">Wilayah / Regional <span class="text-red-500">*</span></label>
+                            <select id="region" class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all shadow-sm" required onchange="filterKecamatan()">
                                 <option value="">-- Pilih Wilayah --</option>
                                 <option value="Surabaya Pusat">Surabaya Pusat</option>
                                 <option value="Surabaya Barat">Surabaya Barat</option>
@@ -113,44 +132,48 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Kecamatan <span class="text-red-500">*</span></label>
-                            <select id="kecamatan" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all text-slate-800 font-medium disabled:bg-slate-100 disabled:text-slate-400" required disabled onchange="filterKelurahan()">
+                            <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-2">Kecamatan <span class="text-red-500">*</span></label>
+                            <select id="kecamatan" class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all shadow-sm disabled:bg-slate-100 disabled:text-slate-400" required disabled onchange="filterKelurahan()">
                                 <option value="">-- Pilih Kecamatan --</option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Kelurahan / Desa <span class="text-red-500">*</span></label>
-                            <select id="kelurahan" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all text-slate-800 font-medium disabled:bg-slate-100 disabled:text-slate-400" required disabled>
+                            <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-2">Kelurahan <span class="text-red-500">*</span></label>
+                            <select id="kelurahan" class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all shadow-sm disabled:bg-slate-100 disabled:text-slate-400" required disabled>
                                 <option value="">-- Pilih Kelurahan --</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Nama Jalan, Blok, & Nomor Rumah <span class="text-red-500">*</span></label>
-                        <textarea id="jalan" rows="3" placeholder="Tuliskan detail nama jalan, RT/RW, nomor rumah, atau penunjuk lokasi spesifik..." class="w-full p-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all text-slate-800 placeholder-slate-400 font-medium" required></textarea>
+                        <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-2">Detail Alamat Lengkap (Jalan, RT/RW, No. Rumah) <span class="text-red-500">*</span></label>
+                        <textarea id="jalan" rows="3" placeholder="Tuliskan nama jalan, nomor rumah, dan rincian posisi spesifik agar mudah ditemukan kurir..." class="w-full p-4 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all shadow-sm" required></textarea>
                     </div>
                 </div>
 
-                <div class="flex gap-3 border-t border-slate-100 pt-6">
-                    <button type="submit" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:opacity-95 transition shadow-md shadow-emerald-100/50 transform hover:scale-[1.01] active:scale-95">
-                        Ajukan Jadwal Penjemputan
+                {{-- ACTION BUTTONS --}}
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-4 rounded-xl text-sm font-extrabold hover:shadow-lg hover:shadow-emerald-500/30 transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Ajukan Penjemputan Sekarang
                     </button>
-                    <a href="{{ route('pelanggan.dashboard') }}" class="bg-slate-100 text-slate-600 px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-200 transition text-center flex items-center justify-center">
-                        Batal
-                    </a>
+                    <button type="reset" class="sm:w-32 bg-slate-100 text-slate-500 px-6 py-4 rounded-xl text-sm font-bold hover:bg-slate-200 transition-all text-center">
+                        Reset Form
+                    </button>
                 </div>
 
             </form>
         </div>
-    </div>
+    </main>
 
-    <footer class="text-center py-8 text-gray-400 text-xs border-t border-gray-100 bg-white tracking-wide mt-auto font-medium">
-        &copy; 2026 Greasycle — Pemrograman Website {{ Auth::user()->nama }} | Built with Laravel & Tailwind CSS
+    {{-- FOOTER SIMPLE --}}
+    <footer class="mt-auto py-8 text-center border-t border-slate-200/60 bg-white/50 backdrop-blur-sm">
+        <p class="text-slate-400 text-xs font-medium tracking-wide">
+            &copy; 2026 <span class="font-bold text-slate-500">Greasycle Indonesia</span>. System by Masyito Indi Kartika.
+        </p>
     </footer>
 
-    {{-- SCRIPTS ENGINE AREA --}}
+    {{-- SCRIPTS KOTA SURABAYA --}}
     <script>
         const wilayahSurabaya = {
             "Surabaya Selatan": {

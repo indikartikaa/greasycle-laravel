@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Pelanggan - Greasycle</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script>
         tailwind.config = {
@@ -16,203 +16,226 @@
                         secondary: '#2d6a4f',
                         accent: '#d1e7e0',
                         lightGreen: '#f0f7f4',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-    <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-emerald-200">
 
-    {{-- NAVBAR --}}
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+    {{-- NAVBAR ELEGANT --}}
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/50 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
             
             {{-- Logo --}}
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md">
-                    <i class="fas fa-recycle text-base"></i>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-200/50">
+                    <i class="fas fa-recycle text-xl"></i>
                 </div>
                 <div class="leading-tight">
-                    <h1 class="text-xl font-extrabold tracking-tight text-slate-900">
+                    <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">
                         Greasy<span class="text-emerald-500">cle</span>
                     </h1>
-                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-[0.15em]">
-                        Pelanggan Portal
+                    <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-[0.2em] mt-0.5">
+                        Portal Pelanggan
                     </p>
                 </div>
             </div>
 
-            {{-- Menu Navigasi Samping Atas --}}
-            <div class="flex flex-wrap items-center gap-3">
-                <a href="{{ route('pelanggan.dashboard') }}"
-                   class="px-4 py-2.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 font-semibold flex items-center gap-2 text-xs md:text-sm">
-                    <i class="fas fa-chart-line"></i> Dashboard
+            {{-- Menu Navigasi --}}
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex flex-col items-end mr-2">
+                    <span class="text-sm font-bold text-slate-800">{{ Auth::user()->nama }}</span>
+                    <span class="text-[10px] text-slate-400 font-medium bg-slate-100 px-2 py-0.5 rounded-full mt-1 uppercase">{{ Auth::user()->role }}</span>
+                </div>
+                <a href="/" class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-slate-100 bg-white text-slate-500 hover:text-emerald-600 hover:border-emerald-100 hover:bg-emerald-50 transition-all" title="Halaman Publik">
+                    <i class="fas fa-home"></i>
                 </a>
-                <a href="/"
-                   class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all duration-300 flex items-center gap-2 text-xs md:text-sm">
-                    <i class="fas fa-globe"></i> Halaman Publik
-                </a>
+                <form action="{{ route('logout') }}" method="POST" class="m-0">
+                    @csrf
+                    <button type="submit" class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-red-50 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm" title="Keluar (Logout)">
+                        <i class="fas fa-power-off"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </nav>
 
     {{-- KONTEN DASHBOARD --}}
-    <div class="max-w-6xl mx-auto px-6 py-10 grow w-full">
-        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-            
-           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 bg-white border border-slate-200 p-5 rounded-2xl gap-4 shadow-2xs">
-    <div class="leading-tight">
-        {{-- Baris ATAS: Selamat datang kembali + Nama User --}}
-        <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">
-            Selamat datang kembali, {{ Auth::user()->nama }} ✨
-        </h2>
-        {{-- Baris BAWAH: Kalimat ringkasan dengan huruf kecil rapi --}}
-        <span class="text-slate-500 text-xs font-semibold tracking-wide block mt-1.5">
-            Berikut adalah ringkasan data setoran Anda.
-        </span>
-    </div>
-                <a href="{{ route('pelanggan.setor') }}"
-                   class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-xs md:text-sm">
-                    <i class="fas fa-plus-circle"></i> Setor Minyak
+    <main class="max-w-7xl mx-auto px-6 lg:px-8 py-12 grow w-full">
+        
+        {{-- HEADER WELCOME CARD --}}
+        <div class="relative bg-gradient-to-r from-emerald-800 via-[#004030] to-emerald-900 rounded-[2rem] p-8 md:p-12 mb-10 overflow-hidden shadow-xl shadow-emerald-900/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            {{-- Background Pattern --}}
+            <div class="absolute -right-20 -top-20 opacity-10">
+                <i class="fas fa-leaf text-[250px] text-white"></i>
+            </div>
+            <div class="relative z-10 text-white">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                    Halo, <span class="text-emerald-300">{{ Auth::user()->nama }}</span> 👋
+                </h2>
+                <p class="text-emerald-100/80 text-sm md:text-base font-medium max-w-lg leading-relaxed">
+                    Setiap tetes limbah yang Anda kelola sangat berarti. Mari terus kumpulkan minyak jelantah Anda dan tukarkan menjadi saldo digital!
+                </p>
+            </div>
+            <div class="relative z-10 w-full md:w-auto">
+                <a href="{{ route('pelanggan.setor') }}" class="group w-full md:w-auto px-8 py-4 rounded-2xl bg-white text-emerald-800 font-extrabold shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3 text-sm md:text-base">
+                    <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    Setor Minyak Sekarang
                 </a>
             </div>
+        </div>
 
-            @if(session('sukses'))
-                <div class="mb-6 p-4 bg-emerald-50 border border-emerald-100 text-emerald-800 rounded-2xl font-medium text-sm flex items-center gap-3">
-                    <i class="fas fa-check-circle text-emerald-500 text-lg"></i>
-                    <span>{{ session('sukses') }}</span>
+        @if(session('sukses'))
+            <div class="mb-10 p-5 bg-emerald-50/80 backdrop-blur-sm border border-emerald-200/60 text-emerald-800 rounded-2xl font-bold text-sm flex items-center gap-4 shadow-sm animate-pulse">
+                <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <i class="fas fa-check"></i>
                 </div>
-            @endif
+                <span>{{ session('sukses') }}</span>
+            </div>
+        @endif
 
-            {{-- KARTU STATISTIK RAMPING PROPORSIONAL --}}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-8">
-                <div class="lg:col-span-4 bg-gradient-to-br from-[#002e21] to-[#014030] rounded-2xl p-5 text-white shadow-sm relative overflow-hidden">
-                    <div class="absolute right-0 bottom-0 text-white/[0.03] text-[80px] translate-x-2 translate-y-2 pointer-events-none">
-                        <i class="fas fa-oil-can"></i>
+        {{-- GRID STATISTIK MODERN --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            
+            {{-- Card Volume --}}
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fas fa-flask"></i>
                     </div>
-                    <div class="relative z-10">
-                        <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center mb-4 border border-white/10">
-                            <i class="fas fa-droplet text-emerald-300 text-sm"></i>
-                        </div>
-                        <p class="text-emerald-200/60 text-[10px] uppercase tracking-[0.15em] font-bold">Total Volume</p>
-                        <h3 class="text-2xl font-bold mt-1.5 leading-none">{{ $total_volume }} <span class="text-xs font-normal opacity-60">L</span></h3>
-                        <p class="text-emerald-200/50 text-[11px] mt-2 font-medium">Liter minyak terkumpul</p>
-                    </div>
+                    <span class="bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">Total Volume</span>
                 </div>
+                <div>
+                    <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight">{{ $total_volume }}<span class="text-xl text-slate-400 font-medium ml-1">L</span></h3>
+                    <p class="text-slate-500 text-sm mt-2 font-medium">Limbah disalurkan</p>
+                </div>
+            </div>
 
-                <div class="lg:col-span-5 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-5 text-white shadow-sm relative overflow-hidden">
-                    <div class="absolute right-0 bottom-0 text-white/[0.06] text-[90px] translate-x-2 translate-y-2 pointer-events-none">
+            {{-- Card Saldo --}}
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-2xl group-hover:bg-amber-400 group-hover:text-white transition-colors duration-300">
                         <i class="fas fa-wallet"></i>
                     </div>
-                    <div class="relative z-10">
-                        <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center mb-4 border border-white/25">
-                            <i class="fas fa-money-bill-wave text-sm text-emerald-100"></i>
+                    <span class="bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">Total Saldo</span>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight"><span class="text-2xl text-slate-400 mr-1 font-medium">Rp</span>{{ number_format($saldo, 0, ',', '.') }}</h3>
+                    <p class="text-slate-500 text-sm mt-2 font-medium">Pendapatan terkumpul</p>
+                </div>
+            </div>
+
+            {{-- Card Status (dipercantik) --}}
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 rounded-2xl {{ $status_aktif == 'Ada Penjemputan' ? 'bg-blue-50 text-blue-500 animate-bounce' : 'bg-slate-50 text-slate-400' }} flex items-center justify-center text-2xl transition-colors duration-300">
+                            <i class="fas fa-truck-fast"></i>
                         </div>
-                        <p class="text-white/70 text-[10px] uppercase tracking-[0.15em] font-bold">Total Saldo</p>
-                        <h3 class="text-2xl font-bold mt-1.5 leading-none">Rp {{ number_format($saldo, 0, ',', '.') }}</h3>
-                        <p class="text-white/80 text-[11px] mt-2 font-medium">Hasil penukaran minyak jelantah</p>
+                        <span class="bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">Status Kurir</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800">{{ $status_aktif }}</h3>
+                </div>
+                
+                {{-- Progress Bar Mini --}}
+                <div class="mt-4 pt-4 border-t border-slate-100">
+                    <div class="flex justify-between text-[11px] font-bold text-slate-500 mb-2">
+                        <span>Target Kontribusi (Bulan ini)</span>
+                        <span class="text-emerald-600">{{ $total_volume }}/20 L</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-emerald-400 to-emerald-600 h-2 rounded-full" style="width: {{ min(($total_volume / 20) * 100, 100) }}%"></div>
                     </div>
                 </div>
+            </div>
 
-              <div class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
-    <div>
-        <div class="flex justify-between items-center mb-4">
-            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.15em]">Status Terkini</p>
-            {{-- Warna ikon pelengkap disesuaikan menjadi abu-abu netral --}}
-            <i class="fas fa-truck text-slate-400 text-sm"></i>
         </div>
-        <div class="flex items-center gap-2 mt-2">
-            {{-- Dot Indikator Dinamis: Hijau menyala jika ada penjemputan, abu-abu jika kosong --}}
-            <span class="w-2.5 h-2.5 rounded-full {{ $status_aktif == 'Ada Penjemputan' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300' }}"></span>
-            <h3 class="font-bold text-slate-800 text-base tracking-tight">{{ $status_aktif }}</h3>
-        </div>
-    </div>
-    {{-- Keterangan tambahan di bagian bawah kartu agar sejajar rapi dengan card lainnya --}}
-    <p class="text-slate-400 text-[11px] mt-4 font-medium">Pantau armada penjemputan Anda.</p>
-</div>
-            </div>
 
-            {{-- PROGRESS BAR TARGET --}}
-            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-8">
-                <div class="flex justify-between items-center mb-2 text-xs">
-                    <div>
-                        <h4 class="font-bold text-gray-800 text-xs">Target Kontribusi Bulanan</h4>
-                        <p class="text-slate-400 text-[11px] mt-0.5">Target minimal partisipasi hijau 20 liter per bulan.</p>
-                    </div>
-                    <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-100">
-                        {{ $total_volume }}/20 Liter
-                    </span>
+        {{-- BAGIAN FILTER & TABEL RIWAYAT --}}
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+            
+            {{-- Toolbar Pencarian & Filter --}}
+            <div class="p-6 md:p-8 border-b border-slate-100 flex flex-col md:flex-row gap-6 items-center justify-between bg-slate-50/50">
+                <div class="w-full md:w-96 relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="pencarian" placeholder="Cari ID transaksi..." class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-medium focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all shadow-sm">
                 </div>
-                <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
-                    <div class="bg-gradient-to-r from-emerald-500 to-green-600 h-3 rounded-full transition-all duration-500"
-                         style="width: {{ min(($total_volume / 20) * 100, 100) }}%">
-                    </div>
+                
+                <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
+                    <button onclick="filterTabel('semua', this)" class="btn-filter shrink-0 px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-600/20 transition-all">Semua</button>
+                    <button onclick="filterTabel('menunggu', this)" class="btn-filter shrink-0 px-5 py-2.5 bg-white text-slate-500 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold transition-all">Menunggu</button>
+                    <button onclick="filterTabel('dijemput', this)" class="btn-filter shrink-0 px-5 py-2.5 bg-white text-slate-500 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold transition-all">Dijemput</button>
+                    <button onclick="filterTabel('selesai', this)" class="btn-filter shrink-0 px-5 py-2.5 bg-white text-slate-500 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold transition-all">Selesai</button>
                 </div>
             </div>
 
-            {{-- SEARCH ENGINE BAR --}}
-            <div class="mb-6 flex flex-col md:flex-row gap-4 items-center bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                <div class="flex-1 w-full relative">
-                    <i class="fas fa-search absolute left-4 top-3.5 text-slate-400 text-sm"></i>
-                    <input type="text" id="pencarian" placeholder="Cari data berdasarkan ID transaksi atau nama wilayah kelurahan..." class="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10">
-                </div>
-                <div class="w-full md:w-auto overflow-x-auto">
-                    <div class="flex gap-2">
-                        <button onclick="filterTabel('semua', this)" class="btn-filter px-4 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-sm transition">Semua</button>
-                        <button onclick="filterTabel('menunggu', this)" class="btn-filter px-4 py-2.5 bg-white text-slate-500 border border-slate-200 rounded-xl text-xs font-bold transition">Menunggu</button>
-                        <button onclick="filterTabel('dijemput', this)" class="btn-filter px-4 py-2.5 bg-white text-slate-500 border border-slate-200 rounded-xl text-xs font-bold transition">Dijemput</button>
-                        <button onclick="filterTabel('selesai', this)" class="btn-filter px-4 py-2.5 bg-white text-slate-500 border border-slate-200 rounded-xl text-xs font-bold transition">Selesai</button>
-                    </div>
-                </div>
-            </div>
-
-            {{-- TABEL DATA RIWAYAT ASLI --}}
-            <div class="overflow-x-auto border border-slate-100 rounded-2xl shadow-xs bg-white">
+            {{-- Tabel Data --}}
+            <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-100/80 text-slate-700 text-xs uppercase font-bold tracking-wider border-b-2 border-emerald-500/20">
-                            <th class="p-4 text-center w-12">No</th>
-                            <th class="p-4">ID Transaksi</th>
-                            <th class="p-4">Tanggal Pengajuan</th>
-                            <th class="p-4">Volume</th>
-                            <th class="p-4">Status Transaksi</th>
-                            <th class="p-4 text-center">Tindakan</th>
+                        <tr class="bg-white text-slate-400 text-[11px] uppercase font-bold tracking-widest border-b border-slate-100">
+                            <th class="p-5 text-center w-16">No</th>
+                            <th class="p-5">ID Setoran</th>
+                            <th class="p-5">Tanggal</th>
+                            <th class="p-5">Volume</th>
+                            <th class="p-5">Status</th>
+                            <th class="p-5 text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="text-sm text-slate-700 divide-y divide-slate-100">
+                    <tbody class="text-sm text-slate-700 divide-y divide-slate-50">
                         @forelse($transaksi as $index => $row)
                             @php
                                 $status_db = strtolower($row->status);
                                 if ($status_db == 'selesai') {
-                                    $badge = 'bg-emerald-50 text-emerald-700 border-emerald-100';
+                                    $badge = 'bg-emerald-50 text-emerald-600 border-emerald-100';
+                                    $icon = 'fa-check-circle';
                                 } elseif ($status_db == 'dijemput') {
-                                    $badge = 'bg-blue-50 text-blue-700 border-blue-100';
+                                    $badge = 'bg-blue-50 text-blue-600 border-blue-100';
+                                    $icon = 'fa-truck-fast';
                                 } else {
-                                    $badge = 'bg-amber-50 text-amber-700 border-amber-100';
+                                    $badge = 'bg-amber-50 text-amber-600 border-amber-100';
+                                    $icon = 'fa-clock';
                                 }
                             @endphp
-                            <tr class="hover:bg-slate-50/50 transition duration-150 row-transaksi" data-status="{{ $status_db }}" data-alamat="{{ strtolower($row->alamat_jemput ?? '') }}" data-id="#trx-{{ $row->id }}">
-                                <td class="p-4 text-center font-medium text-slate-400">{{ $index + 1 }}</td>
-                                <td class="p-4 font-mono font-bold text-slate-900">#TRX-{{ $row->id }}</td>
-                                <td class="p-4 text-slate-500">{{ date('d M Y', strtotime($row->tgl_request)) }}</td>
-                                <td class="p-4 font-bold text-slate-900">{{ $row->volume }} L</td>
-                                <td class="p-4">
-                                    <span class="px-2.5 py-1 rounded-lg text-xs font-bold border {{ $badge }} uppercase tracking-wide">
-                                        {{ $row->status == 'menunggu' ? 'Aktif / Menunggu' : $row->status }}
+                            <tr class="hover:bg-slate-50/80 transition duration-200 row-transaksi group" data-status="{{ $status_db }}" data-alamat="{{ strtolower($row->alamat_jemput ?? '') }}" data-id="#trx-{{ $row->id }}">
+                                <td class="p-5 text-center font-medium text-slate-400 group-hover:text-emerald-500 transition-colors">{{ $index + 1 }}</td>
+                                <td class="p-5 font-bold text-slate-800">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-xs">
+                                            <i class="fas fa-hashtag"></i>
+                                        </div>
+                                        TRX-{{ $row->id }}
+                                    </div>
+                                </td>
+                                <td class="p-5 text-slate-500 font-medium">{{ date('d M Y', strtotime($row->tgl_request)) }}</td>
+                                <td class="p-5 font-extrabold text-slate-800">{{ $row->volume }} <span class="text-slate-400 font-medium text-xs">Liter</span></td>
+                                <td class="p-5">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border {{ $badge }} uppercase tracking-wide">
+                                        <i class="fas {{ $icon }}"></i> {{ $row->status == 'menunggu' ? 'Menunggu' : $row->status }}
                                     </span>
                                 </td>
-                                <td class="p-4 text-center font-semibold">
-                                    {{-- REVISI ROUTE: Menyesuaikan nama alias route lengkap sesuai file web.php kamu --}}
-                                    <div class="flex justify-center gap-4">
-                                        <a href="{{ route('pelanggan.transaksi.show', $row->id) }}" class="text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition"><i class="fas fa-eye text-xs"></i> Detail</a>
+                                <td class="p-5 text-center">
+                                    <div class="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <a href="{{ route('pelanggan.detail', $row->id) }}" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-600 hover:bg-emerald-500 hover:text-white flex items-center justify-center transition-colors shadow-sm" title="Lihat Detail">
+                                            <i class="fas fa-eye text-sm"></i>
+                                        </a>
                                         @if($status_db == 'menunggu')
-                                            <a href="{{ route('pelanggan.transaksi.edit', $row->id) }}" class="text-amber-600 hover:text-amber-700 flex items-center gap-1 transition"><i class="fas fa-edit text-xs"></i> Edit</a>
-                                            <form action="{{ route('pelanggan.transaksi.destroy', $row->id) }}" method="POST" class="inline m-0 p-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data setoran ini?')">
+                                            <a href="{{ route('pelanggan.edit', $row->id) }}" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-600 hover:bg-amber-500 hover:text-white flex items-center justify-center transition-colors shadow-sm" title="Edit Data">
+                                                <i class="fas fa-pen text-sm"></i>
+                                            </a>
+                                            <form action="{{ route('pelanggan.hapus', $row->id) }}" method="POST" class="m-0" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan setoran ini?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-600 font-semibold flex items-center gap-1 transition cursor-pointer bg-transparent border-none p-0"><i class="fas fa-trash-alt text-xs"></i> Hapus</button>
+                                                <button type="submit" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-600 hover:bg-red-500 hover:text-white flex items-center justify-center transition-colors shadow-sm cursor-pointer" title="Batalkan/Hapus">
+                                                    <i class="fas fa-trash-alt text-sm"></i>
+                                                </button>
                                             </form>
                                         @endif
                                     </div>
@@ -220,23 +243,36 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="p-16 text-center text-slate-400 font-medium">
-                                    <div class="text-5xl mb-3">♻️</div>
-                                    <h4 class="text-lg font-bold text-slate-700">Belum Ada Setoran</h4>
-                                    <p class="text-xs text-slate-400 mt-1">Mulai setor minyak jelantah pertama Anda dan kumpulkan saldo digital.</p>
+                                <td colspan="6" class="p-20 text-center">
+                                    <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-sm">
+                                        <i class="fas fa-box-open text-4xl text-slate-300"></i>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-slate-700">Belum Ada Riwayat Setoran</h4>
+                                    <p class="text-sm text-slate-500 mt-2 max-w-sm mx-auto leading-relaxed">Anda belum pernah mengajukan penjemputan limbah. Mulai setor sekarang dan selamatkan lingkungan!</p>
+                                    <a href="{{ route('pelanggan.setor') }}" class="inline-block mt-6 px-6 py-3 bg-emerald-100 text-emerald-700 font-bold rounded-xl hover:bg-emerald-200 transition-colors">
+                                        Ajukan Penjemputan
+                                    </a>
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-
         </div>
-    </div>
+    </main>
 
-    <footer class="text-center py-8 text-gray-400 text-xs border-t border-gray-100 bg-white tracking-wide mt-auto font-medium">
-        &copy; 2026 Greasycle — Pemrograman Website {{ Auth::user()->nama }} | Built with Laravel & Tailwind CSS
+    {{-- FOOTER SIMPLE --}}
+    <footer class="mt-auto py-8 text-center border-t border-slate-200/60 bg-white/50 backdrop-blur-sm">
+        <p class="text-slate-400 text-xs font-medium tracking-wide">
+            &copy; 2026 <span class="font-bold text-slate-500">Greasycle Indonesia</span>. System by Masyito Indi Kartika.
+        </p>
     </footer>
+
+    {{-- STYLE TAMBAHAN UNTUK SCROLLBAR --}}
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 
     <script>
         function filterTabel(kategori, btn) {
@@ -250,14 +286,12 @@
                 }
             });
 
+            // Update styling button filter
             const allButtons = document.querySelectorAll('.btn-filter');
             allButtons.forEach(b => {
-                b.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm');
-                b.classList.add('bg-white', 'text-slate-500', 'border-slate-200');
+                b.className = 'btn-filter shrink-0 px-5 py-2.5 bg-white text-slate-500 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold transition-all';
             });
-
-            btn.classList.remove('bg-white', 'text-slate-500', 'border-slate-200');
-            btn.classList.add('bg-emerald-600', 'text-white', 'shadow-sm');
+            btn.className = 'btn-filter shrink-0 px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-600/20 transition-all';
         }
 
         document.getElementById('pencarian').addEventListener('input', function() {
@@ -265,9 +299,8 @@
             const rows = document.querySelectorAll('.row-transaksi');
 
             rows.forEach(row => {
-                const alamat = row.getAttribute('data-alamat') || '';
                 const id = row.getAttribute('data-id') || '';
-                if (alamat.includes(input) || id.includes(input)) {
+                if (id.includes(input)) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';

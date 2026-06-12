@@ -10,44 +10,70 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function login(Request $request)
-{
-    $credentials = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        $role = trim(strtolower(Auth::user()->role));
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $role = trim(strtolower(Auth::user()->role));
 
-        if ($role === 'pelanggan') return redirect()->route('pelanggan.dashboard');
-        if ($role === 'mitra') return redirect()->route('mitra.dashboard');
+            // Role pelanggan dan usaha diarahkan ke dashboard pelanggan
+            if ($role === 'pelanggan' || $role === 'usaha') {
+                return redirect()->route('pelanggan.dashboard');
+            }
+            if ($role === 'mitra') {
+                return redirect()->route('mitra.dashboard');
+            }
 
-        return redirect('/');
+            return redirect('/');
+        }
+
+        return back()->withErrors(['login_error' => 'Email atau password salah!'])->onlyInput('email');
     }
-
-    return back()->withErrors(['login_error' => 'Email atau password salah!'])->onlyInput('email');
-}
 
     public function register(Request $request)
     {
+        // Validasi data input, termasuk field baru
         $request->validate([
             'nama' => 'required|string|max:255',
             'no_telp' => 'required|string|max:15',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:pelanggan,usaha,mitra'
+            'alamat' => 'required|string', // Alamat sekarang wajib
+            'role' => 'required|in:pelanggan,usaha,mitra',
+            'nama_usaha' => 'nullable|string|max:150|required_if:role,usaha', // Wajib jika role usaha
+            'dokumen_mitra' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048|required_if:role,mitra' // Wajib jika role mitra
         ]);
 
-        User::create([
+        // Siapkan array data dasar
+        $userData = [
             'nama' => $request->nama,
             'no_telp' => $request->no_telp,
             'email' => $request->email,
-            'password' => Hash::make($request->password), 
+            'password' => $request->password, 
+            'alamat' => $request->alamat,
             'role' => $request->role,
-        ]);
+        ];
 
-        return redirect('/')->with('sukses', 'Pendaftaran berhasil!');
+        // Tambahkan nama usaha jika role adalah usaha
+        if ($request->role === 'usaha') {
+            $userData['nama_usaha'] = $request->nama_usaha;
+        }
+
+        // Tangani upload dokumen jika role adalah mitra
+        if ($request->role === 'mitra' && $request->hasFile('dokumen_mitra')) {
+            // Menyimpan file ke folder storage/app/public/dokumen_mitra
+            $path = $request->file('dokumen_mitra')->store('dokumen_mitra', 'public');
+            $userData['dokumen_mitra'] = $path;
+        }
+
+        // Simpan ke database
+        User::create($userData);
+
+        return redirect('/')->with('sukses', 'Pendaftaran berhasil! Silakan masuk.');
     }
 
     public function logout(Request $request)
@@ -57,13 +83,14 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
+    
     public function showLogin()
-{
-    if (Auth::check()) {
-        $role = trim(strtolower(Auth::user()->role));
-        if ($role === 'mitra') return redirect()->route('mitra.dashboard');
-        if ($role === 'pelanggan') return redirect()->route('pelanggan.dashboard');
+    {
+        if (Auth::check()) {
+            $role = trim(strtolower(Auth::user()->role));
+            if ($role === 'mitra') return redirect()->route('mitra.dashboard');
+            if ($role === 'pelanggan' || $role === 'usaha') return redirect()->route('pelanggan.dashboard');
+        }
+        return redirect('/');
     }
-    return redirect('/');
-}
 }
