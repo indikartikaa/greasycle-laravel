@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class PelangganController extends Controller
 {
@@ -128,5 +130,39 @@ class PelangganController extends Controller
         $transaksi->delete();
 
         return redirect()->route('pelanggan.dashboard')->with('sukses', 'Setoran berhasil dihapus.');
+    }
+
+    public function cetakPdf()
+    {
+        $userId = Auth::id();
+        
+        // Ambil bulan dan tahun saat ini
+        $bulanSekarang = Carbon::now()->month;
+        $tahunSekarang = Carbon::now()->year;
+
+        // Ambil data transaksi khusus bulan ini
+        $transaksi = Transaksi::where('user_id', $userId)
+            ->whereMonth('tgl_request', $bulanSekarang)
+            ->whereYear('tgl_request', $tahunSekarang)
+            ->orderBy('tgl_request', 'asc')
+            ->get();
+
+        // Hitung total volume dan saldo bulan ini
+        $totalVolume = $transaksi->where('status', 'selesai')->sum('volume');
+        $totalSaldo = $totalVolume * 5000; // Asumsi harga per liter Rp 5.000
+
+        $data = [
+            'transaksi' => $transaksi,
+            'total_volume' => $totalVolume,
+            'total_saldo' => $totalSaldo,
+            'bulan' => Carbon::now()->locale('id')->translatedFormat('F Y'),
+            'user' => Auth::user()
+        ];
+
+        // Buat file PDF dari view 'pelanggan.pdf' (akan kita buat selanjutnya)
+        $pdf = Pdf::loadView('pelanggan.pdf', $data);
+
+        // Langsung download file PDF-nya
+        return $pdf->download('Rekap_Greasycle_' . Auth::user()->nama . '_' . date('M_Y') . '.pdf');
     }
 }

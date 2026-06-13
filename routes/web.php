@@ -34,6 +34,7 @@ Route::middleware(['auth'])->prefix('pelanggan')->name('pelanggan.')->group(func
     Route::get('/edit/{id}', [PelangganController::class, 'edit'])->name('edit');
     Route::put('/edit/{id}', [PelangganController::class, 'update'])->name('update');
     Route::delete('/hapus/{id}', [PelangganController::class, 'destroy'])->name('hapus');
+    Route::get('/cetak-pdf', [PelangganController::class, 'cetakPdf'])->name('cetak_pdf');  
 });
 
 // ════════ RUTE MITRA ════════
