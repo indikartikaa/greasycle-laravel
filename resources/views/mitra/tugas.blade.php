@@ -110,7 +110,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         window.openModal = function(id, volume) {
-            document.getElementById('formValidasi').action = '/mitra/tugas/validasi/' + id;
+            // URL sudah diperbaiki ke /mitra/validasi/
+            document.getElementById('formValidasi').action = '/mitra/validasi/' + id;
             document.getElementById('inputVolume').value = volume;
             document.getElementById('modalValidasi').classList.remove('hidden');
         }

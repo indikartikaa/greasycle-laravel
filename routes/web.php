@@ -6,7 +6,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\MitraController;
 
-// Rute Publik
+// ════════ RUTE PUBLIK ════════
 Route::get('/', [PagesController::class, 'index'])->name('home');
 Route::get('/about', [PagesController::class, 'about'])->name('about');
 Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
@@ -16,13 +16,12 @@ Route::get('/portofolio', [PagesController::class, 'portofolio'])->name('portofo
 // ════════ RUTE AUTH ════════
 // Jika user belum login & mencoba mengakses halaman tertutup, 
 // Laravel akan melemparnya ke route bernama 'login'.
-// Di sini kita atur agar dia dikembalikan ke Beranda dengan trigger untuk membuka Modal.
 Route::get('/login', function () {
     return redirect('/')->withErrors(['login_error' => 'Akses ditolak. Silakan masuk ke akun Anda terlebih dahulu.']);
-})->name('login');
+})->name('login.get');
 
 // Rute untuk proses pengiriman data form (POST)
-Route::post('/login', [AuthController::class, 'login']); 
+Route::post('/login', [AuthController::class, 'login'])->name('login'); 
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -39,9 +38,16 @@ Route::middleware(['auth'])->prefix('pelanggan')->name('pelanggan.')->group(func
 
 // ════════ RUTE MITRA ════════
 Route::middleware(['auth'])->prefix('mitra')->name('mitra.')->group(function () {
+    // Halaman Tampilan
     Route::get('/dashboard', [MitraController::class, 'dashboard'])->name('dashboard');
     Route::get('/tugas', [MitraController::class, 'tugas'])->name('tugas');
     Route::get('/riwayat', [MitraController::class, 'riwayat'])->name('riwayat');
+    
+    // Aksi / Proses Form (Method POST)
+    Route::post('/ambil-tugas/{id}', [MitraController::class, 'ambilTugas'])->name('ambilTugas');
+    Route::post('/validasi/{id}', [MitraController::class, 'validasi'])->name('validasi');
+    Route::post('/selesai/{id}', [MitraController::class, 'selesai'])->name('selesai');
+    Route::post('/batalkan/{id}', [MitraController::class, 'batalkan'])->name('batalkan'); // Ini rute yang tadi error
 });
 
 // ════════ RUTE PROFIL TIM GREASYCLE ════════

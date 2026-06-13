@@ -6,9 +6,14 @@ class Penjemputan extends Model
 {
     protected $table = 'penjemputan';
     protected $fillable = [
-        'transaksi_id', 'mitra_id', 'volume_aktual',
-        'tanggal_jemput', 'saldo_diberikan', 'status', 'catatan_mitra'
-    ];
+    'transaksi_id',
+    'mitra_id',
+    'volume_aktual',
+    'tanggal_jemput',
+    'status',
+    'catatan_mitra',
+    'saldo_diberikan', // <-- Tambahkan ini
+];
 
     public function transaksi()
     {

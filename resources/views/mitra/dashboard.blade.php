@@ -23,18 +23,19 @@
             <p class="text-gray-400 text-sm">{{ now()->locale('id')->translatedFormat('d M Y') }}</p>
         </div>
 
+        {{-- 1. KOTAK STATISTIK DINAMIS --}}
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                 <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Tugas Aktif</p>
-                <h3 class="text-3xl font-bold text-orange-500">3</h3>
+                <h3 class="text-3xl font-bold text-orange-500">{{ $tugasAktif }}</h3>
             </div>
             <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                 <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Selesai</p>
-                <h3 class="text-3xl font-bold text-gray-800">4</h3>
+                <h3 class="text-3xl font-bold text-gray-800">{{ $selesai }}</h3>
             </div>
             <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                 <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Total Liter</p>
-                <h3 class="text-3xl font-bold text-gray-800">10.50</h3>
+                <h3 class="text-3xl font-bold text-gray-800">{{ number_format($totalLiter, 2, ',', '.') }}</h3>
             </div>
             <div class="bg-[#1a5c38] rounded-xl p-6 shadow-sm">
                 <p class="text-xs text-green-200 font-medium uppercase tracking-wide mb-1">Status</p>
@@ -42,26 +43,41 @@
             </div>
         </div>
 
+        {{-- 2. DAFTAR PERMINTAAN DINAMIS --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
             <div class="px-6 py-4 border-b border-gray-100">
                 <h2 class="font-bold text-gray-800">Permintaan Penjemputan Baru</h2>
             </div>
             <div class="p-6 space-y-4">
-                <div class="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition">
-                    <div>
-                        <p class="font-semibold text-gray-800">Budi Santoso</p>
-                        <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                            <i class="fas fa-map-marker-alt text-[#1a5c38] text-xs"></i> Jl. Rungkut Madya No. 45
-                        </p>
-                        <p class="text-sm font-bold text-[#1a5c38] mt-1">5.00 L</p>
+                @forelse ($permintaan as $item)
+                    <div class="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition">
+                        <div>
+                            <p class="font-semibold text-gray-800">{{ $item->pelanggan->nama ?? 'Tanpa Nama' }}</p>
+                            <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                                <i class="fas fa-map-marker-alt text-[#1a5c38] text-xs"></i> 
+                                {{ $item->pelanggan->alamat ?? 'Alamat tidak tersedia' }}
+                            </p>
+                            <p class="text-sm font-bold text-[#1a5c38] mt-1">{{ $item->volume }} L</p>
+                        </div>
+                        
+                        {{-- Tombol Ambil Tugas dengan Form --}}
+                        <form action="{{ url('mitra/ambil-tugas/' . $item->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-[#1a5c38] hover:bg-green-900 text-white px-5 py-2 rounded-lg text-sm font-bold transition">
+                                Ambil Tugas
+                            </button>
+                        </form>
                     </div>
-                    <button class="bg-[#1a5c38] hover:bg-green-900 text-white px-5 py-2 rounded-lg text-sm font-bold transition">
-                        Ambil Tugas
-                    </button>
-                </div>
+                @empty
+                    <div class="text-center py-6 text-gray-400">
+                        <i class="fas fa-inbox text-3xl mb-2 opacity-50"></i>
+                        <p>Belum ada permintaan penjemputan baru saat ini.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
 
+        {{-- 3. TABEL RIWAYAT DINAMIS --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-100">
             <div class="px-6 py-4 border-b border-gray-100">
                 <h2 class="font-bold text-gray-800">Riwayat Terakhir</h2>
@@ -76,16 +92,19 @@
                         </tr>
                     </thead>
                     <tbody class="text-sm text-gray-700">
-                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
-                            <td class="px-6 py-4">Budi Santoso</td>
-                            <td class="px-6 py-4">1.50L</td>
-                            <td class="px-6 py-4"><span class="text-green-500 font-semibold">SELESAI</span></td>
-                        </tr>
-                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
-                            <td class="px-6 py-4">Siti Aminah</td>
-                            <td class="px-6 py-4">3.00L</td>
-                            <td class="px-6 py-4"><span class="text-green-500 font-semibold">SELESAI</span></td>
-                        </tr>
+                        @forelse ($riwayat as $item)
+                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                                <td class="px-6 py-4">{{ $item->transaksi->pelanggan->nama ?? 'Tanpa Nama' }}</td>
+                                <td class="px-6 py-4">{{ $item->volume_aktual }} L</td>
+                                <td class="px-6 py-4"><span class="text-green-500 font-semibold">{{ strtoupper($item->status) }}</span></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="px-6 py-8 text-center text-gray-400">
+                                    Belum ada riwayat penjemputan.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

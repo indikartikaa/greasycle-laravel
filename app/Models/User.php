@@ -10,18 +10,17 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // public $timestamps = false; // Dihapus/dicomment karena migration menggunakan $table->timestamps()
+    public $timestamps = false; // Mencegah error kolom waktu
 
     protected $fillable = [
         'nama', 
         'no_telp', 
         'email', 
         'password', 
+        'alamat',
         'role',
-        'alamat',         // Kolom baru
-        'nama_usaha',     // Kolom baru
-        'dokumen_mitra',  // Kolom baru
     ];
+
 
     protected $hidden = [
         'password', 'remember_token',

@@ -40,45 +40,31 @@
                         </tr>
                     </thead>
                     <tbody class="text-sm text-gray-700">
-                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
-                            <td class="px-6 py-4">
-                                <p class="font-semibold text-gray-800">Budi Santoso</p>
-                                <p class="text-xs text-gray-400">Jl. Rungkut Madya No. 45</p>
-                            </td>
-                            <td class="px-6 py-4 font-bold">1.50 L</td>
-                            <td class="px-6 py-4 text-gray-500">14 Apr 2026</td>
-                            <td class="px-6 py-4">
-                                <span class="bg-green-100 text-green-600 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1">
-                                    <i class="fas fa-check text-xs"></i> BERHASIL
-                                </span>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
-                            <td class="px-6 py-4">
-                                <p class="font-semibold text-gray-800">Siti Aminah</p>
-                                <p class="text-xs text-gray-400">Jl. Semampir No. 12</p>
-                            </td>
-                            <td class="px-6 py-4 font-bold">3.00 L</td>
-                            <td class="px-6 py-4 text-gray-500">13 Apr 2026</td>
-                            <td class="px-6 py-4">
-                                <span class="bg-green-100 text-green-600 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1">
-                                    <i class="fas fa-check text-xs"></i> BERHASIL
-                                </span>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
-                            <td class="px-6 py-4">
-                                <p class="font-semibold text-gray-800">Ahmad Fauzi</p>
-                                <p class="text-xs text-gray-400">Jl. Kepampang No. 7</p>
-                            </td>
-                            <td class="px-6 py-4 font-bold">4.50 L</td>
-                            <td class="px-6 py-4 text-gray-500">13 Apr 2026</td>
-                            <td class="px-6 py-4">
-                                <span class="bg-green-100 text-green-600 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1">
-                                    <i class="fas fa-check text-xs"></i> BERHASIL
-                                </span>
-                            </td>
-                        </tr>
+                        @forelse($riwayat as $item)
+                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                                <td class="px-6 py-4">
+                                    <p class="font-bold text-gray-800">{{ $item->pelanggan->nama ?? 'Tanpa Nama' }}</p>
+                                    <p class="text-xs text-gray-500 mt-1">{{ $item->alamat_jemput }}</p>
+                                </td>
+                                <td class="px-6 py-4 font-bold text-[#1a5c38]">
+                                    {{ number_format($item->volume, 2) }} L
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    {{ \Carbon\Carbon::parse($item->updated_at)->locale('id')->translatedFormat('d M Y') }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-max">
+                                        <i class="fas fa-check"></i> BERHASIL
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-10 text-center text-gray-400">
+                                    Belum ada riwayat penjemputan yang diselesaikan.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

@@ -13,7 +13,7 @@ class MitraController extends Controller
         $mitraId = Auth::id();
 
         $tugasAktif = Transaksi::where('mitra_id', $mitraId)
-            ->where('status', 'diambil')->count();
+            ->where('status', 'dijemput')->count();
 
         $selesai = Penjemputan::where('mitra_id', $mitraId)
             ->where('status', 'selesai')->count();
@@ -23,7 +23,7 @@ class MitraController extends Controller
 
         $permintaan = Transaksi::with('pelanggan')
             ->whereNull('mitra_id')
-            ->where('status', 'pending')
+            ->where('status', 'menunggu')
             ->latest()->get();
 
         $riwayat = Penjemputan::with('transaksi.pelanggan')
@@ -40,7 +40,7 @@ class MitraController extends Controller
     {
         $tugas = Transaksi::with('pelanggan')
             ->where('mitra_id', Auth::id())
-            ->where('status', 'diambil')
+            ->where('status', 'dijemput')
             ->latest()->get();
 
         return view('mitra.tugas', compact('tugas'));
@@ -51,26 +51,33 @@ class MitraController extends Controller
         $transaksi = Transaksi::findOrFail($id);
         $transaksi->update([
             'mitra_id' => Auth::id(),
-            'status' => 'diambil'
+            'status' => 'dijemput'
         ]);
 
-        return redirect()->route('mitra.tugas')->with('success', 'Tugas berhasil diambil!');
+        return redirect()->route('mitra.tugas')->with('success', 'Tugas berhasil dijemput');
     }
 
     public function validasi(Request $request, $id)
     {
         $request->validate(['volume_aktual' => 'required|numeric|min:0']);
 
+        $hargaPerLiter = 5000; 
+        $saldoYangDiberikan = $request->volume_aktual * $hargaPerLiter;
+
+        // 1. Simpan ke tabel penjemputan
         Penjemputan::updateOrCreate(
             ['transaksi_id' => $id],
             [
                 'mitra_id' => Auth::id(),
                 'volume_aktual' => $request->volume_aktual,
                 'tanggal_jemput' => now(),
-                'status' => 'validasi',
+                'status' => 'proses', 
                 'catatan_mitra' => $request->catatan_mitra ?? null,
+                'saldo_diberikan' => $saldoYangDiberikan,
             ]
         );
+        $transaksi = Transaksi::findOrFail($id);
+        $transaksi->update(['volume' => $request->volume_aktual]);
 
         return redirect()->route('mitra.tugas')->with('success', 'Volume berhasil divalidasi!');
     }
@@ -85,7 +92,7 @@ class MitraController extends Controller
 
     public function batalkan($id)
     {
-        Transaksi::findOrFail($id)->update(['mitra_id' => null, 'status' => 'pending']);
+        Transaksi::findOrFail($id)->update(['mitra_id' => null, 'status' => '']);
         Penjemputan::where('transaksi_id', $id)->delete();
 
         return redirect()->route('mitra.tugas')->with('success', 'Tugas dibatalkan.');
@@ -93,10 +100,12 @@ class MitraController extends Controller
 
     public function riwayat()
     {
-        $riwayat = Penjemputan::with('transaksi.pelanggan')
+        // Mengambil transaksi milik mitra yang login dan statusnya sudah 'selesai'
+        $riwayat = Transaksi::with('pelanggan')
             ->where('mitra_id', Auth::id())
             ->where('status', 'selesai')
-            ->latest()->get();
+            ->latest()
+            ->get();
 
         return view('mitra.riwayat', compact('riwayat'));
     }

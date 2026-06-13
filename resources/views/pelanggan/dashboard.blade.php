@@ -121,7 +121,7 @@
             {{-- Card Saldo --}}
             <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
                 <div class="flex justify-between items-start mb-6">
-                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-2xl group-hover:bg-amber-400 group-hover:text-white transition-colors duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-50 flex items-center justify-center text-2xl group-hover:bg-amber-400 group-hover:text-white transition-colors duration-300">
                         <i class="fas fa-wallet"></i>
                     </div>
                     <span class="bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">Total Saldo</span>
@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-            {{-- Card Status (dipercantik) --}}
+            {{-- Card Status --}}
             <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-start mb-6">
@@ -193,18 +193,29 @@
                         @forelse($transaksi as $index => $row)
                             @php
                                 $status_db = strtolower($row->status);
+                                
+                                // Penyesuaian Logika Status & Warna
                                 if ($status_db == 'selesai') {
                                     $badge = 'bg-emerald-50 text-emerald-600 border-emerald-100';
                                     $icon = 'fa-check-circle';
-                                } elseif ($status_db == 'dijemput') {
-                                    $badge = 'bg-blue-50 text-blue-600 border-blue-100';
+                                    $text_status = 'Selesai';
+                                    $filter_status = 'selesai';
+                                } elseif ($status_db == 'diambil' || $status_db == 'dijemput') {
+                                    // Berubah menjadi warna Kuning saat diambil mitra
+                                    $badge = 'bg-yellow-100 text-yellow-600 border-yellow-200 shadow-sm';
                                     $icon = 'fa-truck-fast';
+                                    $text_status = 'Dijemput';
+                                    $filter_status = 'dijemput'; // Menyesuaikan dengan tombol filter JS
                                 } else {
-                                    $badge = 'bg-amber-50 text-amber-600 border-amber-100';
+                                    $badge = 'bg-orange-50 text-orange-600 border-orange-100';
                                     $icon = 'fa-clock';
+                                    $text_status = 'Menunggu';
+                                    $filter_status = 'menunggu';
                                 }
                             @endphp
-                            <tr class="hover:bg-slate-50/80 transition duration-200 row-transaksi group" data-status="{{ $status_db }}" data-alamat="{{ strtolower($row->alamat_jemput ?? '') }}" data-id="#trx-{{ $row->id }}">
+                            
+                            {{-- Perhatikan data-status menggunakan $filter_status agar filter JS berfungsi --}}
+                            <tr class="hover:bg-slate-50/80 transition duration-200 row-transaksi group" data-status="{{ $filter_status }}" data-alamat="{{ strtolower($row->alamat_jemput ?? '') }}" data-id="#trx-{{ $row->id }}">
                                 <td class="p-5 text-center font-medium text-slate-400 group-hover:text-emerald-500 transition-colors">{{ $index + 1 }}</td>
                                 <td class="p-5 font-bold text-slate-800">
                                     <div class="flex items-center gap-3">
@@ -217,8 +228,9 @@
                                 <td class="p-5 text-slate-500 font-medium">{{ date('d M Y', strtotime($row->tgl_request)) }}</td>
                                 <td class="p-5 font-extrabold text-slate-800">{{ $row->volume }} <span class="text-slate-400 font-medium text-xs">Liter</span></td>
                                 <td class="p-5">
+                                    {{-- Menampilkan badge dinamis --}}
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border {{ $badge }} uppercase tracking-wide">
-                                        <i class="fas {{ $icon }}"></i> {{ $row->status == 'menunggu' ? 'Menunggu' : $row->status }}
+                                        <i class="fas {{ $icon }}"></i> {{ $text_status }}
                                     </span>
                                 </td>
                                 <td class="p-5 text-center">
